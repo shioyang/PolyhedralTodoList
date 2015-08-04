@@ -11,4 +11,10 @@
     <string name="action_list_01">List 01</string>
     <string name="action_list_02">List 02</string>
 
+    <string name="list_id_01">needReplace</string>
+    <string name="list_id_02">needReplace</string>
+    <string name="title_activity_poly_main_list">PolyMainListActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+
 </resources>
