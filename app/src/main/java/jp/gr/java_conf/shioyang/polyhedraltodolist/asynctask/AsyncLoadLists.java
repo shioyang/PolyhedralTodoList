@@ -1,6 +1,5 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,6 +8,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
+import com.google.api.services.tasks.model.TaskLists;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,22 +17,18 @@ import java.util.List;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainListActivity;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainListImpl;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
-public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
-    final PolyMainListActivity activity;
-    final PolyMainList polyMainList;
+public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
+    final MainActivity activity;
     final Tasks client;
     private final ProgressBar progressBar;
 
-    public AsyncLoadTasks(PolyMainListActivity tasksActivity, PolyMainList polyMainList) {
+    public AsyncLoadLists(MainActivity tasksActivity) {
         super();
         this.activity = tasksActivity;
-        this.polyMainList = polyMainList;
         client = tasksActivity.getService();
-//        client = tasksActivity.service;
         progressBar = (ProgressBar) tasksActivity.findViewById(R.id.progressBar);
     }
 
@@ -40,31 +36,33 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressBar.setVisibility(View.VISIBLE);
-        polyMainList.reset();
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
         List<String> result = new ArrayList<>();
         try {
-            //test
-            String id01 = activity.getResources().getString(R.string.list_id_01); //PolyTest01
-            TaskList taskList = client.tasklists().get(id01).setFields("id, title").execute();
-            List<Task> tasks = client.tasks().list(id01).setFields("items(id,title,parent,position,status)").execute().getItems();
-            if (tasks != null) {
-                polyMainList.addTodoList(taskList, tasks, R.color.cherry);
-            }
+            TaskLists taskLists = client.tasklists().list().execute();
+            activity.setTaskLists(taskLists.getItems());
 
-            String id02 = activity.getResources().getString(R.string.list_id_02); //PolyTest02
-            TaskList taskList2 = client.tasklists().get(id02).setFields("id, title").execute();
-            List<Task> tasks2 = client.tasks().list(id02).setFields("items(id,title,parent,position,status)").execute().getItems();
-            if (tasks2 != null) {
-                polyMainList.addTodoList(taskList2, tasks2, R.color.skyBlue);
-            }
-            //test
+//            //test
+//            String id01 = activity.getResources().getString(R.string.list_id_01); //PolyTest01
+//            TaskList taskList = client.tasklists().get(id01).setFields("id, title").execute();
+//            List<Task> tasks = client.tasks().list(id01).setFields("items(id,title,parent,position,status)").execute().getItems();
+//            if (tasks != null) {
+//                polyMainList.addTodoList(taskList, tasks, R.color.cherry);
+//            }
+//
+//            String id02 = activity.getResources().getString(R.string.list_id_02); //PolyTest02
+//            TaskList taskList2 = client.tasklists().get(id02).setFields("id, title").execute();
+//            List<Task> tasks2 = client.tasks().list(id02).setFields("items(id,title,parent,position,status)").execute().getItems();
+//            if (tasks2 != null) {
+//                polyMainList.addTodoList(taskList2, tasks2, R.color.skyBlue);
+//            }
+//            //test
 
-            List<PolyTodoItem> globalTodoItems = polyMainList.getGlobalTodoItems();
-            activity.setPolyTodoItems(globalTodoItems);
+//            List<PolyTodoItem> globalTodoItems = polyMainList.getGlobalTodoItems();
+//            activity.setPolyTodoItems(globalTodoItems);
 //            if (globalTodoItems != null) {
 //                for (PolyTodoItem polyTodoItem : globalTodoItems) {
 //                    result.add(polyTodoItem.getTitle());
@@ -107,8 +105,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
             activity.refreshView();
     }
 
-    public static void run(PolyMainListActivity tasksActivity, PolyMainList polyMainList) {
-        new AsyncLoadTasks(tasksActivity, polyMainList).execute();
+    public static void run(MainActivity tasksActivity) {
+        new AsyncLoadLists(tasksActivity).execute();
     }
 }
 

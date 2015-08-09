@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -21,12 +21,12 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
-import com.google.gson.Gson;
+import com.google.api.services.tasks.model.TaskList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,13 +49,10 @@ public class MainActivity extends AppCompatActivity {
     PolyMainList polyMainList;
 
     ListView listView;
-    PolyTodoItemArrayAdapter adapter;
-//    ArrayAdapter<PolyTodoItem> adapter;
-//    ArrayAdapter<String> adapter;
+    TasklistsArrayAdapter adapter;
     List<String> tasksList;
-    List<PolyTodoItem> polyTodoItems;
-
-//    List<MenuItem> disabledMenuItems;
+    List<TaskList> tasklists;
+//    List<PolyTodoItem> polyTodoItems;
 
     // ===========================================
     // LIFECYCLE
@@ -64,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PolyMainListActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Google Accounts
         credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(TasksScopes.TASKS));
@@ -79,14 +85,6 @@ public class MainActivity extends AppCompatActivity {
         // PolyMainList
         polyMainList = PolyMainListImpl.getInstance();
         polyMainList.setTasksService(service);
-        polyMainList.setOnListChanged(new OnMainListChangedListener() {
-            @Override
-            public void mainListChanged() {
-//                polyTodoItems = polyMainList.getGlobalTodoItems();
-//                adapter.insert();
-//                refreshView();
-            }
-        });
 
 //        disabledMenuItems = new ArrayList<>();
     }
@@ -121,13 +119,15 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        AsyncLoadTasks.run(this, polyMainList);
+                        // TODO: AsyncLoadTaskLists
+                        AsyncLoadLists.run(this);
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION: // In AsyncLoadTasks, when access right is needed. UserRecoverableException
                 if (resultCode == Activity.RESULT_OK) {
-                    AsyncLoadTasks.run(this, polyMainList);
+                    // TODO: AsyncLoadTaskLists
+                    AsyncLoadLists.run(this);
                 } else {
                     chooseAccount();
                 }
@@ -138,17 +138,11 @@ public class MainActivity extends AppCompatActivity {
     // ----------
     public void refreshView() {
         if (adapter == null) {
-            adapter = new PolyTodoItemArrayAdapter(this, 0, polyTodoItems);
+            adapter = new TasklistsArrayAdapter(this, 0, tasklists);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();
         }
-//        adapter = new PolyTodoItemArrayAdapter(this, 0, polyTodoItems);
-//        listView.setAdapter(adapter);
-
-//        for (MenuItem item : disabledMenuItems) {
-//            item.setEnabled(true);
-//        }
     }
 
     @Override
@@ -182,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 //                disabledMenuItems.add(item);
                 String listId = polyMainList.getPolyTodoListId(0); // test
                 polyMainList.addTodoItem(listId);
-                setPolyTodoItems(polyMainList.getGlobalTodoItems());
+//                setPolyTodoItems(polyMainList.getGlobalTodoItems());
                 adapter.notifyDataSetChanged(); // TODO: work???
                 return true;
             case R.id.action_remove:
@@ -204,13 +198,12 @@ public class MainActivity extends AppCompatActivity {
         return polyMainList.getTasksService();
     }
 
-//    public void setTasksList(List<String> tasksList) {
-//        this.tasksList = tasksList;
-//    }
-
-    public void setPolyTodoItems(List<PolyTodoItem> polyTodoItems) {
-        this.polyTodoItems = polyTodoItems;
+    public void setTaskLists(List<TaskList> tasklists) {
+        this.tasklists = tasklists;
     }
+//    public void setPolyTodoItems(List<PolyTodoItem> polyTodoItems) {
+//        this.polyTodoItems = polyTodoItems;
+//    }
 
     // ===========================================
     // PRIVATE
@@ -238,13 +231,9 @@ public class MainActivity extends AppCompatActivity {
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
-            if (polyMainList != null && !polyMainList.isLoaded())
-                AsyncLoadTasks.run(this, polyMainList);
-            else {
-                if (polyTodoItems == null)
-                    polyTodoItems = polyMainList.getGlobalTodoItems();
-                refreshView();
-            }
+            // TODO: AsyncLoadTaskLists
+            AsyncLoadLists.run(this);
+            refreshView();
         }
     }
 
@@ -255,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean startListActivity(int num) {
         try {
             Intent intent = new Intent(this, PolyListActivity.class);
-//            PolyTodoList polyTodoList = polyMainList.getPolyTodoList(num);
-//            intent.putExtra(List_ID, polyTodoList.getId());
             intent.putExtra(List_ID, polyMainList.getPolyTodoListId(num));
             startActivity(intent);
             overridePendingTransition(R.anim.abc_slide_in_bottom, 0);
