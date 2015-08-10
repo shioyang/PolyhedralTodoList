@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     TasklistsArrayAdapter adapter;
     List<String> tasksList;
     List<TaskList> tasklists;
-//    List<PolyTodoItem> polyTodoItems;
 
     // ===========================================
     // LIFECYCLE
@@ -201,9 +200,6 @@ public class MainActivity extends AppCompatActivity {
     public void setTaskLists(List<TaskList> tasklists) {
         this.tasklists = tasklists;
     }
-//    public void setPolyTodoItems(List<PolyTodoItem> polyTodoItems) {
-//        this.polyTodoItems = polyTodoItems;
-//    }
 
     // ===========================================
     // PRIVATE
@@ -233,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // TODO: AsyncLoadTaskLists
             AsyncLoadLists.run(this);
-            refreshView();
         }
     }
 
