@@ -8,9 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -27,7 +30,6 @@ import java.util.Collections;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     PolyMainList polyMainList;
 
     ListView listView;
-    TasklistsArrayAdapter adapter;
+    TaskListsArrayAdapter adapter;
     List<String> tasksList;
     List<TaskList> tasklists;
 
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.buttonMain);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +81,19 @@ public class MainActivity extends AppCompatActivity {
         Tasks service = new Tasks.Builder(httpTransport, gsonFactory, credential).setApplicationName(APPLICATION_NAME).build();
 
         // ListView
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listViewMain);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("MainActivity", "onItemClick() is called");
+                TaskList taskList = adapter.getItem(i);
+                // TODO: PolyList is not loaded yet...
+                Intent intent = new Intent(view.getContext(), PolyListActivity.class);
+                intent.putExtra(List_ID, taskList.getId());
+                startActivity(intent);
+                overridePendingTransition(R.anim.abc_slide_in_bottom, 0);
+            }
+        });
 
         // PolyMainList
         polyMainList = PolyMainListImpl.getInstance();
@@ -94,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
         if (checkGooglePlayServicesAvailability()) {
             haveGooglePlayServices();
         }
+    }
+
+    // Just for debug
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d("MainActivity", "Finally, onTouchEvent() is called.");
+        return super.onTouchEvent(event);
     }
 
     // ----------
@@ -137,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     // ----------
     public void refreshView() {
         if (adapter == null) {
-            adapter = new TasklistsArrayAdapter(this, 0, tasklists);
+            adapter = new TaskListsArrayAdapter(this, 0, tasklists);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();

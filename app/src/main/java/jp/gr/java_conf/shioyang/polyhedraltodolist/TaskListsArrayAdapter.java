@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.api.services.tasks.model.TaskList;
-import com.google.api.services.tasks.model.TaskLists;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     private LayoutInflater inflater = null;
     private View selectedView = null;
 
-    public TasklistsArrayAdapter(Context context, int resource, List<TaskList> tasklits) {
+    public TaskListsArrayAdapter(Context context, int resource, List<TaskList> tasklits) {
         super(context, resource, tasklits);
         inflater = ((Activity)context).getLayoutInflater();
     }
@@ -25,16 +24,7 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item, null);
-//            convertView = inflater.inflate(R.layout.list_item2, null);
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Change bgcolor
-
-                    selectedView = view;
-                }
-            });
+            convertView = inflater.inflate(R.layout.task_list_item, null);
         }
 
         TaskList taskList = getItem(position);
@@ -50,7 +40,4 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
         return convertView;
     }
 
-    public View getSelectedView() {
-        return selectedView;
-    }
 }

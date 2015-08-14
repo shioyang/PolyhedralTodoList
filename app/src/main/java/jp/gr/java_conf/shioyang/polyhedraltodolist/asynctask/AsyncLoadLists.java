@@ -29,7 +29,7 @@ public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
         super();
         this.activity = tasksActivity;
         client = tasksActivity.getService();
-        progressBar = (ProgressBar) tasksActivity.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) tasksActivity.findViewById(R.id.progressBarMain);
     }
 
     @Override

@@ -9,22 +9,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:id="@+id/button" />
+        android:id="@+id/buttonMain" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarMain"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
-        android:layout_below="@+id/button" />
+        android:layout_below="@+id/buttonMain" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/progressBar"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/listViewMain"
+        android:layout_below="@+id/progressBarMain"
+        android:layout_centerHorizontal="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true" />
 
 </RelativeLayout>
