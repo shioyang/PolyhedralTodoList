@@ -13,7 +13,7 @@ import com.google.api.services.tasks.model.TaskLists;
 
 import java.util.List;
 
-public class TasklistsArrayAdapter extends ArrayAdapter<TaskList> {
+public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     private LayoutInflater inflater = null;
     private View selectedView = null;
 
