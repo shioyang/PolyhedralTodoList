@@ -119,13 +119,13 @@ public class PolyMainListActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        AsyncLoadTasks.run(this, polyMainList);
+//                        AsyncLoadTasks.run(this, polyMainList);
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION: // In AsyncLoadTasks, when access right is needed. UserRecoverableException
                 if (resultCode == Activity.RESULT_OK) {
-                    AsyncLoadTasks.run(this, polyMainList);
+//                    AsyncLoadTasks.run(this, polyMainList);
                 } else {
                     chooseAccount();
                 }
@@ -236,9 +236,9 @@ public class PolyMainListActivity extends AppCompatActivity {
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
-            if (polyMainList != null && !polyMainList.isLoaded())
-                AsyncLoadTasks.run(this, polyMainList);
-            else {
+            if (polyMainList != null && !polyMainList.isLoaded()) {
+//                AsyncLoadTasks.run(this, polyMainList);
+            } else {
                 if (polyTodoItems == null)
                     polyTodoItems = polyMainList.getGlobalTodoItems();
                 refreshView();

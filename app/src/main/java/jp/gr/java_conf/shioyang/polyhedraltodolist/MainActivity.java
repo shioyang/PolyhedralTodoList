@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     TaskListsArrayAdapter adapter;
     List<String> tasksList;
-    List<TaskList> tasklists;
+    List<TaskList> taskLists;
 
     // ===========================================
     // LIFECYCLE
@@ -156,9 +157,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ----------
+    public void completeLoadLists() {
+        AsyncLoadTasks.run(this, polyMainList, taskLists);
+    }
+
     public void refreshView() {
         if (adapter == null) {
-            adapter = new TaskListsArrayAdapter(this, 0, tasklists);
+            adapter = new TaskListsArrayAdapter(this, 0, taskLists);
             listView.setAdapter(adapter);
         } else {
             adapter.notifyDataSetChanged();
@@ -197,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
         return polyMainList.getTasksService();
     }
 
-    public void setTaskLists(List<TaskList> tasklists) {
-        this.tasklists = tasklists;
+    public void setTaskLists(List<TaskList> taskLists) {
+        this.taskLists = taskLists;
     }
 
     // ===========================================

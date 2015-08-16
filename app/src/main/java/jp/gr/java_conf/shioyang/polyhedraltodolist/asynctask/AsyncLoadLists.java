@@ -6,9 +6,7 @@ import android.widget.ProgressBar;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
-import com.google.api.services.tasks.model.TaskLists;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,9 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainListActivity;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
 public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
@@ -81,7 +76,7 @@ public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
         super.onPostExecute(isSuccess);
         progressBar.setVisibility(View.GONE);
         if (isSuccess)
-            activity.refreshView();
+            activity.completeLoadLists();
     }
 
     public static void run(MainActivity tasksActivity) {
