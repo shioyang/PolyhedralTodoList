@@ -13,6 +13,8 @@ import com.google.api.services.tasks.model.TaskLists;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
@@ -24,6 +26,13 @@ public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
     final MainActivity activity;
     final Tasks client;
     private final ProgressBar progressBar;
+
+    static String regex = "^poly:(.*)";
+    static Pattern pattern;
+
+    static {
+        pattern = Pattern.compile(regex);
+    }
 
     public AsyncLoadLists(MainActivity tasksActivity) {
         super();
@@ -42,49 +51,19 @@ public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         List<String> result = new ArrayList<>();
         try {
-            TaskLists taskLists = client.tasklists().list().execute();
-            activity.setTaskLists(taskLists.getItems());
+//            TaskLists taskLists = client.tasklists().list().execute();
+//            activity.setTaskLists(taskLists.getItems());
+            List<TaskList> taskLists = client.tasklists().list().execute().getItems();
+            List<TaskList> newTaskLists = new ArrayList<>();
+            for (TaskList taskList : taskLists) {
+                String title = taskList.getTitle();
+                Matcher matcher = pattern.matcher(title);
+                if (matcher.find() && matcher.groupCount() == 1) {
+                    newTaskLists.add(taskList);
+                }
+            }
+            activity.setTaskLists(newTaskLists);
 
-//            //test
-//            String id01 = activity.getResources().getString(R.string.list_id_01); //PolyTest01
-//            TaskList taskList = client.tasklists().get(id01).setFields("id, title").execute();
-//            List<Task> tasks = client.tasks().list(id01).setFields("items(id,title,parent,position,status)").execute().getItems();
-//            if (tasks != null) {
-//                polyMainList.addTodoList(taskList, tasks, R.color.cherry);
-//            }
-//
-//            String id02 = activity.getResources().getString(R.string.list_id_02); //PolyTest02
-//            TaskList taskList2 = client.tasklists().get(id02).setFields("id, title").execute();
-//            List<Task> tasks2 = client.tasks().list(id02).setFields("items(id,title,parent,position,status)").execute().getItems();
-//            if (tasks2 != null) {
-//                polyMainList.addTodoList(taskList2, tasks2, R.color.skyBlue);
-//            }
-//            //test
-
-//            List<PolyTodoItem> globalTodoItems = polyMainList.getGlobalTodoItems();
-//            activity.setPolyTodoItems(globalTodoItems);
-//            if (globalTodoItems != null) {
-//                for (PolyTodoItem polyTodoItem : globalTodoItems) {
-//                    result.add(polyTodoItem.getTitle());
-////                    result.add(polyTodoItem.getJustTitle());
-//                }
-//            } else {
-//                result.add("No tasks...");
-//            }
-//            activity.setTasksList(result);
-
-//            TaskList taskList = client.tasklists().get("@default").setFields("id").execute();
-//            List<Task> tasks = client.tasks().list(listId).setFields("items(id,title,parent,position,status)").execute().getItems();
-
-//            List<Task> tasks = client.tasks().list("@default").setFields("items(title)").execute().getItems();
-//            if (tasks != null) {
-//                for (Task task : tasks) {
-//                    result.add(task.getTitle());
-//                }
-//            } else {
-//                result.add("No tasks...");
-//            }
-//            activity.tasksList = result;
             return true;
         } catch (UserRecoverableAuthIOException userRecoverableAuthIOException) {
             activity.startActivityForResult(userRecoverableAuthIOException.getIntent(), activity.REQUEST_AUTHORIZATION);
