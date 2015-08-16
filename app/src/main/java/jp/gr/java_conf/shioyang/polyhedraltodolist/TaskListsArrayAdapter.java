@@ -11,10 +11,19 @@ import android.widget.TextView;
 import com.google.api.services.tasks.model.TaskList;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     private LayoutInflater inflater = null;
     private View selectedView = null;
+
+    static String regex = "^poly:(.*)";
+    static Pattern pattern;
+
+    static {
+        pattern = Pattern.compile(regex);
+    }
 
     public TaskListsArrayAdapter(Context context, int resource, List<TaskList> tasklits) {
         super(context, resource, tasklits);
@@ -33,8 +42,13 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
 //        convertView.setBackgroundColor(polyTodoItem.getColor());
 
         // Text
+        String justTitle = "no title";
+        Matcher matcher = pattern.matcher(taskList.getTitle());
+        if (matcher.find() && matcher.groupCount() == 1) {
+            justTitle = matcher.group(1);
+        }
         TextView textView = (TextView)convertView.findViewById(R.id.textView);
-        textView.setText(taskList.getTitle());
+        textView.setText(justTitle);
 //        textView.setText(polyTodoItem.getJustTitle());
 
         return convertView;
