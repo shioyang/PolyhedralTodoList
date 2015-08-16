@@ -8,7 +8,7 @@
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarPolyList"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
@@ -16,8 +16,8 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/progressBar"
+        android:id="@+id/listViewPolyList"
+        android:layout_below="@+id/progressBarPolyList"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

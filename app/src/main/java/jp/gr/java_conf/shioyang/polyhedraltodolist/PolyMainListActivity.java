@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -61,22 +62,13 @@ public class PolyMainListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Google Accounts
-        credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(TasksScopes.TASKS));
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        credential.setSelectedAccountName(prefs.getString(PREF_ACCOUNT_NAME, null));
-
-        // Tasks client
-        Tasks service = new Tasks.Builder(httpTransport, gsonFactory, credential).setApplicationName(APPLICATION_NAME).build();
+        setContentView(R.layout.activity_poly_main_list);
 
         // ListView
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listViewPolyList);
 
         // PolyMainList
         polyMainList = PolyMainListImpl.getInstance();
-        polyMainList.setTasksService(service);
         polyMainList.setOnListChanged(new OnMainListChangedListener() {
             @Override
             public void mainListChanged() {
@@ -141,8 +133,6 @@ public class PolyMainListActivity extends AppCompatActivity {
         } else {
             adapter.notifyDataSetChanged();
         }
-//        adapter = new PolyTodoItemArrayAdapter(this, 0, polyTodoItems);
-//        listView.setAdapter(adapter);
 
 //        for (MenuItem item : disabledMenuItems) {
 //            item.setEnabled(true);
@@ -202,10 +192,6 @@ public class PolyMainListActivity extends AppCompatActivity {
         return polyMainList.getTasksService();
     }
 
-//    public void setTasksList(List<String> tasksList) {
-//        this.tasksList = tasksList;
-//    }
-
     public void setPolyTodoItems(List<PolyTodoItem> polyTodoItems) {
         this.polyTodoItems = polyTodoItems;
     }
@@ -233,14 +219,17 @@ public class PolyMainListActivity extends AppCompatActivity {
     }
 
     private void haveGooglePlayServices() {
-        if (credential.getSelectedAccountName() == null) {
+        if (polyMainList.getTasksService() == null) {
+            // TODO: New authentication ?
+            Log.e("haveGooglePlayServices", "Not implement new authentication");
             chooseAccount();
         } else {
             if (polyMainList != null && !polyMainList.isLoaded()) {
 //                AsyncLoadTasks.run(this, polyMainList);
             } else {
-                if (polyTodoItems == null)
+                if (polyTodoItems == null) {
                     polyTodoItems = polyMainList.getGlobalTodoItems();
+                }
                 refreshView();
             }
         }
@@ -253,8 +242,6 @@ public class PolyMainListActivity extends AppCompatActivity {
     private boolean startListActivity(int num) {
         try {
             Intent intent = new Intent(this, PolyListActivity.class);
-//            PolyTodoList polyTodoList = polyMainList.getPolyTodoList(num);
-//            intent.putExtra(List_ID, polyTodoList.getId());
             intent.putExtra(List_ID, polyMainList.getPolyTodoListId(num));
             startActivity(intent);
             overridePendingTransition(R.anim.abc_slide_in_bottom, 0);
