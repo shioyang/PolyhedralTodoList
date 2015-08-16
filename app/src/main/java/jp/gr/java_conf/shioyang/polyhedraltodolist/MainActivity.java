@@ -40,9 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_AUTHORIZATION = 1;
     private static final int REQUEST_ACCOUNT_PICKER = 2;
 
-    // test
     private static final String List_ID = "LIST_ID";
-    // test
 
     final HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
     final GsonFactory gsonFactory = GsonFactory.getDefaultInstance();
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     TaskListsArrayAdapter adapter;
-    List<String> tasksList;
     List<TaskList> taskLists;
 
     // ===========================================
