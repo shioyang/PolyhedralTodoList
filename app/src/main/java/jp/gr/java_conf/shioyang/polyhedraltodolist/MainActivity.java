@@ -179,33 +179,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_insert:
-                // TODO: Add function
-                // If an item is not selected, add last.
-                // If an item is selected, insert next the item.
-//                View selectedView = adapter.getSelectedView();
-//                adapter.getPosition(selectedView.getContext());
-//                if (selectedView == null) {
-//                    polyMainList.addTodoList(selectedView);
-//                }
-                return true;
             case R.id.action_add:
-                // TODO: Ask user which list the new item is added to.
-                // show chooser to select list
-//                item.setEnabled(false);
-//                disabledMenuItems.add(item);
-                String listId = polyMainList.getPolyTodoListId(0); // test
-                polyMainList.addTodoItem(listId);
-//                setPolyTodoItems(polyMainList.getGlobalTodoItems());
-                adapter.notifyDataSetChanged(); // TODO: work???
+                // TODO: Add list
                 return true;
-            case R.id.action_remove:
-                // TODO: Remove function
+            case R.id.action_remove_list:
+                // TODO: Remove list
                 return true;
-            case R.id.action_list_01:
-                return startListActivity(0);
-            case R.id.action_list_02:
-                return startListActivity(1);
             case R.id.action_settings:
                 return true;
         }
