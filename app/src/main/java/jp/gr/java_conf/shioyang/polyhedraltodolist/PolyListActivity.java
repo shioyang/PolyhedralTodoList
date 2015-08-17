@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,6 +37,19 @@ public class PolyListActivity extends AppCompatActivity {
 
         // ListView
         listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
+                Log.d("PolyListActivity", "ListView.onItemClick is called");
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long idl) {
+                Log.d("PolyListActivity", "ListView.onItemLongClick is called");
+                return true; //true: consume this event here
+            }
+        });
 
         Intent intent = getIntent();
         list_id = intent.getStringExtra(List_ID);
