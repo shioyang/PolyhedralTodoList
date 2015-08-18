@@ -1,5 +1,7 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist;
 
+import android.util.Log;
+
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
@@ -127,6 +129,30 @@ public class PolyMainListImpl implements PolyMainList {
             }
         }
         return polyTodoList;
+    }
+
+    @Override
+    public Boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
+        Log.d("PolyMainListImpl", "moveUpTask 1 [not implemented]");
+        return null;
+    }
+
+    @Override
+    public Boolean moveUpTask(String taskId, String listId) {
+        Log.d("PolyMainListImpl", "moveUpTask 2 [not implemented]");
+        return null;
+    }
+
+    @Override
+    public Boolean moveDownTask(PolyTodoItem item, PolyTodoList list) {
+        Log.d("PolyMainListImpl", "moveDownTask 1 [not implemented]");
+        return null;
+    }
+
+    @Override
+    public Boolean moveDownTask(String taskId, String listId) {
+        Log.d("PolyMainListImpl", "moveDownTask 2 [not implemented]");
+        return null;
     }
 
     // ===========================================
