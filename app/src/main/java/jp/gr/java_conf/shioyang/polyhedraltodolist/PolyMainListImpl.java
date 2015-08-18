@@ -88,7 +88,7 @@ public class PolyMainListImpl implements PolyMainList {
 
     @Override
     public void addTodoItem(String listId) {
-        Task task = null;
+        Task task;
         PolyTodoList polyTodoList = getPolyTodoList(listId);
         if (polyTodoList != null) {
             String previousTaskId = polyTodoList.getTaskId(polyTodoList.getLocalList().size() - 1);
@@ -134,6 +134,20 @@ public class PolyMainListImpl implements PolyMainList {
     @Override
     public Boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "moveUpTask 1 [not implemented]");
+        // call task.move needs:
+        //     1: task list ID
+        //     2: task ID
+        //     3: previous ID (higher sibling task ID)
+        String previousTaskId = list.getPreviousTaskId(item);
+        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousTaskId);
+        if (!previousTaskId.isEmpty()) {
+            // call task.move
+
+            // Update global
+
+            // Update local
+
+        }
         return null;
     }
 
@@ -146,6 +160,11 @@ public class PolyMainListImpl implements PolyMainList {
     @Override
     public Boolean moveDownTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "moveDownTask 1 [not implemented]");
+        // call task.move needs:
+        //     1: task list ID
+        //     2: task ID
+        //     3: previous ID (lower sibling task ID)
+
         return null;
     }
 
