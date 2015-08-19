@@ -144,6 +144,7 @@ public class PolyMainListImpl implements PolyMainList {
             // call task.move
 
             // Update global
+//			moveUpTaskInGlobalTodoItems(item);
 
             // Update local
 

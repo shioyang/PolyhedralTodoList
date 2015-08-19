@@ -34,6 +34,8 @@ public interface PolyTodoList {
     /* UPDATE */
     void done(int id);
     void updateTitle(int id);
+    void moveUpTask(String id);
+    void moveDownTask(String id);
     /* DELETE */
     void delete(int id);
 }

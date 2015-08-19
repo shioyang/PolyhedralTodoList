@@ -131,6 +131,16 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public void moveUpTask(String id) {
+
+    }
+
+    @Override
+    public void moveDownTask(String id) {
+
+    }
+
+    @Override
     public void delete(int id) {
 
     }
