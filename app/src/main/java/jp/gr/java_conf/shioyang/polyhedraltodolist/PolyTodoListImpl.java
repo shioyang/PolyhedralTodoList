@@ -100,29 +100,25 @@ public class PolyTodoListImpl implements PolyTodoList {
 
     @Override
     public PolyTodoItem getPreviousTask(PolyTodoItem item) {
-        PolyTodoItem previousTask = null;
-        String previousTaskId = getPreviousTaskId(item);
-        if (!previousTaskId.isEmpty()) {
-            previousTask = localList.get(localList.indexOf(previousTaskId));
-        }
-        return previousTask;
-    }
-
-    @Override
-    public String getPreviousTaskId(PolyTodoItem item) {
-        String foundPreviousTaskId = "";
+        PolyTodoItem rtnTodoItem = null;
         if (item != null) {
-            String taskId = item.getId();
+            String itemId = item.getId();
             for (int i = 1; i < localList.size(); i++) {
-                String previousTaskId = localList.get(i - 1).getId();
-                String currentTaskId = localList.get(i).getId();
-                if (currentTaskId.equals(taskId)) {
-                    foundPreviousTaskId = previousTaskId;
+                PolyTodoItem previous = localList.get(i - 1);
+                String currentId = localList.get(i).getId();
+                if (currentId.equals(itemId)) {
+                    rtnTodoItem = previous;
                     break;
                 }
             }
         }
-        return foundPreviousTaskId;
+        return rtnTodoItem;
+    }
+
+    @Override
+    public String getPreviousTaskId(PolyTodoItem item) {
+        PolyTodoItem previous = getPreviousTask(item);
+        return (previous != null) ? previous.getId() : "";
     }
 
     @Override
