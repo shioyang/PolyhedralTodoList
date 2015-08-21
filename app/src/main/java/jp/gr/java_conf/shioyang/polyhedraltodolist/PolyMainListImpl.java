@@ -210,8 +210,7 @@ public class PolyMainListImpl implements PolyMainList {
     }
 
     private boolean verifyPosition(int position, PolyTodoItem item) {
-        int index = globalTodoItems.indexOf(item);
-        return (index == position) ? true : false;
+        return (globalTodoItems.indexOf(item) == position);
     }
 
     private void moveUpTaskInGlobalTodoItems(PolyTodoItem item) {
