@@ -1,6 +1,5 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.api.services.tasks.Tasks;
@@ -8,19 +7,18 @@ import com.google.api.services.tasks.model.Task;
 
 import java.io.IOException;
 
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
 
-public class AsyncAddTask extends AsyncTask<Void, Void, Boolean> {
+public class AsyncMoveTask extends AsyncTask<Void, Void, Boolean> {
     Tasks tasksService;
-    Task task;
     String listId;
+    String taskId;
     String previousTaskId;
 
-    public AsyncAddTask(Tasks tasksService, Task task, String listId, String previousTaskId) {
+    public AsyncMoveTask(Tasks tasksService, String listId, String taskId, String previousTaskId) {
         this.tasksService = tasksService;
-        this.task = task;
         this.listId = listId;
+        this.taskId = taskId;
         this.previousTaskId = previousTaskId;
     }
 
@@ -28,8 +26,8 @@ public class AsyncAddTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean isSuccess = false;
         try {
-            Task result = tasksService.tasks().insert(listId, task).setPrevious(previousTaskId).execute();
-            isSuccess = PolyUtil.copyTaskValues(result, task);
+            Task result = tasksService.tasks().move(listId, taskId).setPrevious(previousTaskId).execute();
+            isSuccess = true;
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
@@ -45,7 +43,7 @@ public class AsyncAddTask extends AsyncTask<Void, Void, Boolean> {
 //        }
     }
 
-    public static void run(Tasks tasksService, Task task, String listId, String previousTaskId) {
-        new AsyncAddTask(tasksService, task, listId, previousTaskId).execute();
+    public static void run(Tasks tasksService, String listId, String taskId, String previousTaskId) {
+        new AsyncMoveTask(tasksService, listId, taskId, previousTaskId).execute();
     }
 }

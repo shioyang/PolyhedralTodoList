@@ -30,9 +30,13 @@ public interface PolyTodoList {
     String getId();
     String getTitle();
     String getTaskId(int position);
+    PolyTodoItem getPreviousTask(PolyTodoItem item);
+    String getPreviousTaskId(PolyTodoItem item);
     /* UPDATE */
     void done(int id);
     void updateTitle(int id);
+    void moveUpTask(String id);
+    void moveDownTask(String id);
     /* DELETE */
     void delete(int id);
 }
