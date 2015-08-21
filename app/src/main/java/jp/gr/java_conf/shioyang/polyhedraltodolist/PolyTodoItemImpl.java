@@ -96,6 +96,11 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     }
 
     @Override
+    public void setGlobalPosition(int globalPosition) {
+        this.globalPosition = globalPosition;
+    }
+
+    @Override
     public int getLocalPosition() {
         return localPosition;
     }

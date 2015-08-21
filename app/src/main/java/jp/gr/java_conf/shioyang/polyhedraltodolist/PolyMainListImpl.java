@@ -138,18 +138,25 @@ public class PolyMainListImpl implements PolyMainList {
         //     1: task list ID
         //     2: task ID
         //     3: previous ID (higher sibling task ID)
-        String previousTaskId = list.getPreviousTaskId(item);
-        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousTaskId);
-        if (!previousTaskId.isEmpty()) {
+        String previousId = list.getPreviousTaskId(item);
+        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousId);
+        if (!previousId.isEmpty()) {
             // call task.move
+            // TODO: Call PolyTodoItemExecutor.move()
 
             // Update global
-//			moveUpTaskInGlobalTodoItems(item);
-
-            // Update local
-
+            try {
+                PolyTodoItem previous = list.getPreviousTask(item);
+                while (isHigherPriority(previous, item)) {   // while (previous.position > item.position)
+                    moveUpTaskInGlobalTodoItems(item);
+                }
+            } catch (TaskMismatchPositionsException e) {
+                Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
+                e.printStackTrace();
+                return false;
+            }
         }
-        return null;
+        return true;
     }
 
     @Override
@@ -186,5 +193,38 @@ public class PolyMainListImpl implements PolyMainList {
     private void mergePolyTodoItemsLast(List<PolyTodoItem> polyTodoItems) {
         globalTodoItems.addAll(polyTodoItems);
         Collections.sort(globalTodoItems, comparator); // Sort by global position
+    }
+
+    private boolean isHigherPriority(PolyTodoItem previous, PolyTodoItem item) throws TaskMismatchPositionsException {
+        boolean isHigher = false;
+        if (previous != null && item != null) {
+            int previousPosition = previous.getGlobalPosition();
+            int itemPosition = item.getGlobalPosition();
+            if (!verifyPosition(previousPosition, previous) || !verifyPosition(itemPosition, item)) {
+                throw new TaskMismatchPositionsException("Position mismatch.");
+            }
+            if (previousPosition > itemPosition)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean verifyPosition(int position, PolyTodoItem item) {
+        int index = globalTodoItems.indexOf(item);
+        return (index == position) ? true : false;
+    }
+
+    private void moveUpTaskInGlobalTodoItems(PolyTodoItem item) {
+        // Swap in globalTodoItems
+        int index = globalTodoItems.indexOf(item);
+        if (index >= 0) {
+            return;
+        }
+        PolyTodoItem target = globalTodoItems.get(index - 1);
+        globalTodoItems.set(index - 1, item);
+        globalTodoItems.set(index, target);
+        // Update global position in each PolyTodoItem
+        item.setGlobalPosition(index - 1);
+        target.setGlobalPosition(index);
     }
 }
