@@ -142,7 +142,7 @@ public class PolyMainListImpl implements PolyMainList {
         Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousId);
         if (!previousId.isEmpty()) {
             // call task.move
-            // TODO: Call PolyTodoItemExecutor.move()
+//            PolyTodoItemExecutor.move(tasksService, item.getId(), list.getId(), previousId);
 
             // Update global
             try {
@@ -203,7 +203,7 @@ public class PolyMainListImpl implements PolyMainList {
             if (!verifyPosition(previousPosition, previous) || !verifyPosition(itemPosition, item)) {
                 throw new TaskMismatchPositionsException("Position mismatch.");
             }
-            if (previousPosition > itemPosition)
+            if (previousPosition < itemPosition) // Small digit is high priority.
                 return true;
         }
         return false;
@@ -216,7 +216,7 @@ public class PolyMainListImpl implements PolyMainList {
     private void moveUpTaskInGlobalTodoItems(PolyTodoItem item) {
         // Swap in globalTodoItems
         int index = globalTodoItems.indexOf(item);
-        if (index >= 0) {
+        if (index <= 0) {
             return;
         }
         PolyTodoItem target = globalTodoItems.get(index - 1);

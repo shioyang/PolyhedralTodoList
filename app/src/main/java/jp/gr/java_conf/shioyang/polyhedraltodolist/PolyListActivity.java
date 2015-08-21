@@ -42,7 +42,11 @@ public class PolyListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d("PolyListActivity", "ListView.onItemClick is called");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                polyMainList.moveUpTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMainList.moveUpTask(polyTodoItem, polyTodoList);
+                if (isSuccess) {
+                    polyTodoItems = polyTodoList.getLocalList();
+                    refreshView();
+                }
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
