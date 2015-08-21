@@ -32,7 +32,7 @@ public class AsyncAddTask extends AsyncTask<Void, Void, Boolean> {
             isSuccess = PolyUtil.copyTaskValues(result, task);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            isSuccess = false;
         }
         return isSuccess;
     }
