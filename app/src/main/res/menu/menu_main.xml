@@ -1,16 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_insert" android:title="@string/action_insert"
+    <item android:id="@+id/action_add_list" android:title="@string/action_add_list"
         android:orderInCategory="100" app:showAsAction="always" />
-    <item android:id="@+id/action_add" android:title="@string/action_add"
-        android:orderInCategory="100" app:showAsAction="always" />
-    <item android:id="@+id/action_remove" android:title="@string/action_remove"
+    <item android:id="@+id/action_remove_list" android:title="@string/action_remove_list"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
-    <group android:id="@+id/group_list">
-        <item android:id="@+id/action_list_01" android:title="@string/action_list_01" />
-        <item android:id="@+id/action_list_02" android:title="@string/action_list_02" />
-    </group>
 </menu>

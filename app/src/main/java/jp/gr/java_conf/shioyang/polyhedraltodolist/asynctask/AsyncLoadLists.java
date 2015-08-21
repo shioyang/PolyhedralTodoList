@@ -6,52 +6,58 @@ import android.widget.ProgressBar;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
-public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
+public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
     final MainActivity activity;
-    final PolyMainList polyMainList;
     final Tasks client;
     private final ProgressBar progressBar;
 
-    private List<TaskList> taskLists;
+    static String regex = "^poly:(.*)";
+    static Pattern pattern;
 
-    public AsyncLoadTasks(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists) {
+    static {
+        pattern = Pattern.compile(regex);
+    }
+
+    public AsyncLoadLists(MainActivity tasksActivity) {
         super();
-        this.activity = mainActivity;
-        this.polyMainList = polyMainList;
-        client = mainActivity.getService();
-        progressBar = (ProgressBar) mainActivity.findViewById(R.id.progressBarMain);
-        this.taskLists = taskLists;
+        this.activity = tasksActivity;
+        client = tasksActivity.getService();
+        progressBar = (ProgressBar) tasksActivity.findViewById(R.id.progressBarMain);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         progressBar.setVisibility(View.VISIBLE);
-        polyMainList.reset();
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
         List<String> result = new ArrayList<>();
         try {
+//            TaskLists taskLists = client.tasklists().list().execute();
+//            activity.setTaskLists(taskLists.getItems());
+            List<TaskList> taskLists = client.tasklists().list().execute().getItems();
+            List<TaskList> newTaskLists = new ArrayList<>();
             for (TaskList taskList : taskLists) {
-                List<Task> tasks = client.tasks().list(taskList.getId()).setFields("items(id,title,parent,position,status)").execute().getItems();
-                if (tasks != null) {
-                    // TODO: Provide different color
-                    polyMainList.addTodoList(taskList, tasks, R.color.cherry);
+                String title = taskList.getTitle();
+                Matcher matcher = pattern.matcher(title);
+                if (matcher.find() && matcher.groupCount() == 1) {
+                    newTaskLists.add(taskList);
                 }
             }
+            activity.setTaskLists(newTaskLists);
 
             return true;
         } catch (UserRecoverableAuthIOException userRecoverableAuthIOException) {
@@ -70,11 +76,11 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
         super.onPostExecute(isSuccess);
         progressBar.setVisibility(View.GONE);
         if (isSuccess)
-            activity.refreshView();
+            activity.completeLoadLists();
     }
 
-    public static void run(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists) {
-        new AsyncLoadTasks(mainActivity, polyMainList, taskLists).execute();
+    public static void run(MainActivity tasksActivity) {
+        new AsyncLoadLists(tasksActivity).execute();
     }
 }
 

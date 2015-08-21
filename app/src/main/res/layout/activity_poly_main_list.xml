@@ -5,28 +5,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/buttonMain" />
-
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBarMain"
+        android:id="@+id/progressBarPolyList"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_below="@+id/buttonMain" />
+        android:visibility="gone" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewMain"
-        android:layout_below="@+id/progressBarMain"
-        android:layout_centerHorizontal="true"
-        android:focusableInTouchMode="true"
-        android:focusable="true" />
+        android:id="@+id/listViewPolyList"
+        android:layout_below="@+id/progressBarPolyList"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -27,6 +27,7 @@ public class PolyTodoListImpl implements PolyTodoList {
         this.taskList = taskList;
         this.localList = new ArrayList<>();
         if (taskList != null) {
+            // TODO
         }
     }
 
@@ -35,7 +36,7 @@ public class PolyTodoListImpl implements PolyTodoList {
         this.localList = new ArrayList<>();
         // TODO: Set color
         this.color = color;
-        if (taskList != null && taskList != null) {
+        if (taskList != null && tasks != null) {
             String listId = taskList.getId();
             for (Task task : tasks) {
                 if (task.getTitle().isEmpty())
@@ -98,6 +99,29 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public PolyTodoItem getPreviousTask(PolyTodoItem item) {
+        PolyTodoItem rtnTodoItem = null;
+        if (item != null) {
+            String itemId = item.getId();
+            for (int i = 1; i < localList.size(); i++) {
+                PolyTodoItem previous = localList.get(i - 1);
+                String currentId = localList.get(i).getId();
+                if (currentId.equals(itemId)) {
+                    rtnTodoItem = previous;
+                    break;
+                }
+            }
+        }
+        return rtnTodoItem;
+    }
+
+    @Override
+    public String getPreviousTaskId(PolyTodoItem item) {
+        PolyTodoItem previous = getPreviousTask(item);
+        return (previous != null) ? previous.getId() : "";
+    }
+
+    @Override
     public String getTitle() {
         return taskList.getTitle();
     }
@@ -113,6 +137,16 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public void moveUpTask(String id) {
+
+    }
+
+    @Override
+    public void moveDownTask(String id) {
+
+    }
+
+    @Override
     public void delete(int id) {
 
     }
@@ -121,9 +155,7 @@ public class PolyTodoListImpl implements PolyTodoList {
         Task task = new Task();
         task.setTitle(PolyUtil.formatTaskTitle(globalPosition, localPosition, justTitle));
         PolyTodoItem polyTodoItem = new PolyTodoItemImpl(task, getId(), color);
-        if (polyTodoItem != null) {
-            localList.add(polyTodoItem);
-        }
+        localList.add(polyTodoItem);
         return task;
     }
 }

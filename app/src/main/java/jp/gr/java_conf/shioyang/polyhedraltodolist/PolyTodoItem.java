@@ -2,9 +2,6 @@ package jp.gr.java_conf.shioyang.polyhedraltodolist;
 
 import com.google.api.services.tasks.model.Task;
 
-/**
- * Created by shioyang.
- */
 public interface PolyTodoItem {
     /*
     String listId
@@ -31,6 +28,7 @@ public interface PolyTodoItem {
     void setColor(int color);
 
     int getGlobalPosition();
+    void setGlobalPosition(int globalPosition);
     int getLocalPosition();
     String getJustTitle();
 

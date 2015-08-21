@@ -41,6 +41,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity" />
         </activity>
+        <activity
+            android:name=".PolyMainListActivity"
+            android:label="@string/title_activity_poly_main_list"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
