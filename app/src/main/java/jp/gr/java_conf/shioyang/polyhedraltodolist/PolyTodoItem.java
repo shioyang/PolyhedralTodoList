@@ -30,6 +30,7 @@ public interface PolyTodoItem {
     int getGlobalPosition();
     void setGlobalPosition(int globalPosition);
     int getLocalPosition();
+    void setLocalPosition(int localPosition);
     String getJustTitle();
 
     String getListId();

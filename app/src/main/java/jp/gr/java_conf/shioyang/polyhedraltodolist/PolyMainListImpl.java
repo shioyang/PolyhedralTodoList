@@ -148,7 +148,8 @@ public class PolyMainListImpl implements PolyMainList {
             try {
                 PolyTodoItem previous = list.getPreviousTask(item);
                 while (isHigherPriority(previous, item)) {   // while (previous.position > item.position)
-                    moveUpTaskInGlobalTodoItems(item);
+                    moveUpTaskForGlobal(previous, item);
+                    moveUpTaskForLocal(list, item.getId());
                 }
             } catch (TaskMismatchPositionsException e) {
                 Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
@@ -213,17 +214,20 @@ public class PolyMainListImpl implements PolyMainList {
         return (globalTodoItems.indexOf(item) == position);
     }
 
-    private void moveUpTaskInGlobalTodoItems(PolyTodoItem item) {
+    private void moveUpTaskForGlobal(PolyTodoItem previous, PolyTodoItem item) {
         // Swap in globalTodoItems
         int index = globalTodoItems.indexOf(item);
-        if (index <= 0) {
-            return;
+        if (index > 0) {
+            globalTodoItems.set(index - 1, item);
+            globalTodoItems.set(index, previous);
+            // Update global position in each PolyTodoItem
+            item.setGlobalPosition(index - 1);
+            previous.setGlobalPosition(index);
         }
-        PolyTodoItem target = globalTodoItems.get(index - 1);
-        globalTodoItems.set(index - 1, item);
-        globalTodoItems.set(index, target);
-        // Update global position in each PolyTodoItem
-        item.setGlobalPosition(index - 1);
-        target.setGlobalPosition(index);
+    }
+
+    private void moveUpTaskForLocal(PolyTodoList list, String id) {
+        // Update local position in PolyTodoList
+        list.moveUpTask(id);
     }
 }

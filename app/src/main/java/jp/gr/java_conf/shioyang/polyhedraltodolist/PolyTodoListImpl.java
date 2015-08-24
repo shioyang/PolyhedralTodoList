@@ -138,7 +138,19 @@ public class PolyTodoListImpl implements PolyTodoList {
 
     @Override
     public void moveUpTask(String id) {
-
+        PolyTodoItem item = getTaskById(id);
+        if (item != null) {
+            int index = item.getLocalPosition();
+            if (index > 0) {
+                // Swap position in localList
+                PolyTodoItem previous = localList.get(index - 1);
+                localList.set(index - 1, item);
+                localList.set(index, previous);
+                // Update local position in each PolyTodoItems
+                item.setLocalPosition(index - 1);
+                previous.setLocalPosition(index);
+            }
+        }
     }
 
     @Override
@@ -157,5 +169,16 @@ public class PolyTodoListImpl implements PolyTodoList {
         PolyTodoItem polyTodoItem = new PolyTodoItemImpl(task, getId(), color);
         localList.add(polyTodoItem);
         return task;
+    }
+
+    private PolyTodoItem getTaskById(String id) {
+        PolyTodoItem found = null;
+        for (PolyTodoItem item : localList) {
+            if (id.equals(item.getId())) {
+                found = item;
+                break;
+            }
+        }
+        return found;
     }
 }
