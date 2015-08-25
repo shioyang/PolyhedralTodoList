@@ -134,14 +134,10 @@ public class PolyMainListImpl implements PolyMainList {
     @Override
     public Boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "Start moveUpTask 1");
-        // call task.move needs:
-        //     1: task list ID
-        //     2: task ID
-        //     3: previous ID (higher sibling task ID)
         String previousId = list.getPreviousTaskId(item);
         Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousId);
         if (!previousId.isEmpty()) {
-            // call task.move
+            // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
 //            PolyTodoItemExecutor.move(tasksService, item.getId(), list.getId(), previousId);
 
             try {
@@ -152,6 +148,12 @@ public class PolyMainListImpl implements PolyMainList {
                 }
                 // Update local
                 moveUpTaskForLocal(list, item.getId());
+
+                // Save
+                // for task in list
+                //    find task which isNeedSave is true
+                //    async title update task
+
             } catch (TaskMismatchPositionsException e) {
                 Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
                 e.printStackTrace();

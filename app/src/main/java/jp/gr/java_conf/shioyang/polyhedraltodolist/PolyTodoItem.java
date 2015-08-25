@@ -12,8 +12,6 @@ public interface PolyTodoItem {
 //    String parent
 //    String position
 //    String status
-
-    PolyTodoItem parentItem
      */
 
 //    polyTodoItem(String listId, Task task);
@@ -40,5 +38,5 @@ public interface PolyTodoItem {
     String getPosition();
     String getStatus();
 
-    PolyTodoItem getParentItem();
+    void saveCompleted();
 }

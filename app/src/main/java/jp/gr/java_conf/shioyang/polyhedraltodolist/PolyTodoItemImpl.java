@@ -29,8 +29,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     int localPosition = -1;
     String justTitle = null;
 
-    PolyTodoItem parentItem; //need?
-
+    boolean isNeedSave = false;
 
     public PolyTodoItemImpl(Task task, String listId, int color) {
         this.task = task;
@@ -98,6 +97,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     @Override
     public void setGlobalPosition(int globalPosition) {
         this.globalPosition = globalPosition;
+        this.isNeedSave = true;
     }
 
     @Override
@@ -108,6 +108,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     @Override
     public void setLocalPosition(int localPosition) {
         this.localPosition = localPosition;
+        this.isNeedSave = true;
     }
 
     @Override
@@ -146,7 +147,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     }
 
     @Override
-    public PolyTodoItem getParentItem() {
-        return parentItem;
+    public void saveCompleted() {
+        this.isNeedSave = false;
     }
 }
