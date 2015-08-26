@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,12 +19,10 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.TasksScopes;
 
-import java.util.Collections;
 import java.util.List;
 
-import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 
 
 public class PolyMainListActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl;
 
 import android.util.Log;
 
@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.OnMainListChangedListener;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemComparator;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemExecutor;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.TaskMismatchPositionsException;
 
 /*
  * "Facade" class for PolyTodoList and PolyTodoItem classes.

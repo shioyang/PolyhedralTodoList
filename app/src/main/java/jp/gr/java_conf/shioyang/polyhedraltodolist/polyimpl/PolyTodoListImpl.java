@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl;
 
 import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
@@ -6,6 +6,12 @@ import com.google.api.services.tasks.model.TaskList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemComparator;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyTodoItemImpl;
 
 public class PolyTodoListImpl implements PolyTodoList {
     static Comparator<PolyTodoItem> comparator;

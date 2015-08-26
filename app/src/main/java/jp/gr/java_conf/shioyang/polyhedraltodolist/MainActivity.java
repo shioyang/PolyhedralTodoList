@@ -31,6 +31,7 @@ import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl;
 
 import android.util.Log;
 
@@ -6,6 +6,9 @@ import com.google.api.services.tasks.model.Task;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
 
 public class PolyTodoItemImpl implements PolyTodoItem {
     static String regex = "^poly:global(\\d+):local(\\d+):(.*)";

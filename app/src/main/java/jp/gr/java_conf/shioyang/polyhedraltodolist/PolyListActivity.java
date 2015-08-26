@@ -1,7 +1,6 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +12,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 
 
 public class PolyListActivity extends AppCompatActivity {
