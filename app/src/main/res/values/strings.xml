@@ -17,6 +17,7 @@
     <string name="list_id_02">MDM0NzY1NDMwOTU5NDU5MDM4NjA6MzA1Nzg5Nzk6MA</string>
     <string name="title_activity_poly_main_list">PolyMainListActivity</string>
 
+    <string name="buttonMainText">Polyhedral TODO List</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

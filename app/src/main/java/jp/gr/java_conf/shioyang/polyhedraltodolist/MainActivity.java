@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     TaskListsArrayAdapter adapter;
     List<TaskList> taskLists;
+    Button button;
 
     // ===========================================
     // LIFECYCLE
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.buttonMain);
+        button = (Button) findViewById(R.id.buttonMain);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        // TODO: AsyncLoadTaskLists
+                        button.setEnabled(false);
                         AsyncLoadLists.run(this);
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION: // In AsyncLoadTasks, when access right is needed. UserRecoverableException
                 if (resultCode == Activity.RESULT_OK) {
-                    // TODO: AsyncLoadTaskLists
+                    button.setEnabled(false);
                     AsyncLoadLists.run(this);
                 } else {
                     chooseAccount();
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             adapter.notifyDataSetChanged();
         }
+        button.setEnabled(true);
     }
 
     @Override
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
-            // TODO: AsyncLoadTaskLists
+            button.setEnabled(false);
             AsyncLoadLists.run(this);
         }
     }
