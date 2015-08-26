@@ -6,15 +6,15 @@ import com.google.api.services.tasks.model.TaskList;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncAddTask;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncMoveTask;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncUpdateTask;
 
 public class PolyTodoItemExecutor {
     public static void add(Tasks tasksService, Task task, String listId, String previousTaskId) {
         AsyncAddTask.run(tasksService, task, listId, previousTaskId);
     }
 
-    public static void update(Tasks tasksService, Task task, String listId, String taskId) {
-        // TODO: AsyncUpdateTask
-//        AsyncUpdateTask.run(tasksService, task, listId, taskId);
+    public static void update(Tasks tasksService, Task task, String listId) {
+        AsyncUpdateTask.run(tasksService, task, listId);
     }
 
     public static void move(Tasks tasksService, String listId, String taskId, String previousTaskId) {

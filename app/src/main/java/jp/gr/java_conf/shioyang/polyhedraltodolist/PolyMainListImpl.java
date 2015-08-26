@@ -153,6 +153,7 @@ public class PolyMainListImpl implements PolyMainList {
                 // for task in list
                 //    find task which isNeedSave is true
                 //    async title update task
+                saveChangedTasks();
 
             } catch (TaskMismatchPositionsException e) {
                 Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
@@ -242,4 +243,15 @@ public class PolyMainListImpl implements PolyMainList {
         // Update local position in PolyTodoList
         list.moveUpTask(id);
     }
+
+    private void saveChangedTasks() {
+        for (PolyTodoList list : todoLists) {
+            List<PolyTodoItem> savedTasks = list.getSaveNeededTasks();
+            for (PolyTodoItem saveItem : savedTasks) {
+                PolyTodoItemExecutor.update(tasksService, saveItem.getTask(), list.getId());
+                saveItem.saveCompleted(); // TODO: If success, saveCompleted. If not, try again.
+            }
+        }
+    }
+
 }

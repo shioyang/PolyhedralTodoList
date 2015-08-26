@@ -17,7 +17,6 @@ public interface PolyTodoList {
     boolean isPolyTodoList();
 
     void loadTodoItems();
-//    void save?
 
     /* LIST */
     List<PolyTodoItem> getLocalList();
@@ -32,6 +31,7 @@ public interface PolyTodoList {
     String getTaskId(int position);
     PolyTodoItem getPreviousTask(PolyTodoItem item);
     String getPreviousTaskId(PolyTodoItem item);
+    List<PolyTodoItem> getSaveNeededTasks();
     /* UPDATE */
     void done(int id);
     void updateTitle(int id);

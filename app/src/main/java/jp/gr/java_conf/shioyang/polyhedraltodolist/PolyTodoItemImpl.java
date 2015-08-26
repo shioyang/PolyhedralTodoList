@@ -1,5 +1,7 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist;
 
+import android.util.Log;
+
 import com.google.api.services.tasks.model.Task;
 
 import java.util.regex.Matcher;
@@ -29,7 +31,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     int localPosition = -1;
     String justTitle = null;
 
-    boolean isNeedSave = false;
+    boolean isSaveNeeded = false;
 
     public PolyTodoItemImpl(Task task, String listId, int color) {
         this.task = task;
@@ -37,22 +39,6 @@ public class PolyTodoItemImpl implements PolyTodoItem {
         this.color = color;
         parseTitle();
     }
-
-//    public PolyTodoItemImpl(String listId, int color, int globalPosition, int localPosition, String justTitle) {
-//        this.task = null;
-//        this.listId = listId;
-//        this.color = color;
-//        this.globalPosition = globalPosition;
-//        this.localPosition = localPosition;
-//        this.justTitle = justTitle;
-//    }
-
-//    @Override
-//    public void setTask(Task task) throws TaskAlreadyHasException {
-//        if (task != null)
-//            throw new TaskAlreadyHasException("This instance have already had a task instance.");
-//        this.task = task;
-//    }
 
     @Override
     public boolean isPolyTodoItem() {
@@ -90,6 +76,11 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     }
 
     @Override
+    public Task getTask() {
+        return this.task;
+    }
+
+    @Override
     public int getGlobalPosition() {
         return globalPosition;
     }
@@ -97,7 +88,10 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     @Override
     public void setGlobalPosition(int globalPosition) {
         this.globalPosition = globalPosition;
-        this.isNeedSave = true;
+        String newTitle = makeTaskTitle();
+        task.setTitle(newTitle);
+        Log.d("PolyTodoItemImpl", "setGlobalPosition| New title: " + newTitle);
+        this.isSaveNeeded = true;
     }
 
     @Override
@@ -108,12 +102,24 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     @Override
     public void setLocalPosition(int localPosition) {
         this.localPosition = localPosition;
-        this.isNeedSave = true;
+        String newTitle = makeTaskTitle();
+        task.setTitle(newTitle);
+        Log.d("PolyTodoItemImpl", "setLocalPosition| New title: " + newTitle);
+        this.isSaveNeeded = true;
     }
 
     @Override
     public String getJustTitle() {
         return justTitle;
+    }
+
+    @Override
+    public void setJustTitle(String justTitle) {
+        this.justTitle = justTitle;
+        String newTitle = makeTaskTitle();
+        task.setTitle(newTitle);
+        Log.d("PolyTodoItemImpl", "setJustTitle| New title: " + newTitle);
+        this.isSaveNeeded = true;
     }
 
     @Override
@@ -147,7 +153,12 @@ public class PolyTodoItemImpl implements PolyTodoItem {
     }
 
     @Override
+    public boolean isSaveNeeded() {
+        return this.isSaveNeeded;
+    }
+
+    @Override
     public void saveCompleted() {
-        this.isNeedSave = false;
+        this.isSaveNeeded = false;
     }
 }

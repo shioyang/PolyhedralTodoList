@@ -25,11 +25,13 @@ public interface PolyTodoItem {
     int getColor();
     void setColor(int color);
 
+    Task getTask();
     int getGlobalPosition();
     void setGlobalPosition(int globalPosition);
     int getLocalPosition();
     void setLocalPosition(int localPosition);
     String getJustTitle();
+    void setJustTitle(String justTitle);
 
     String getListId();
     String getId();
@@ -38,5 +40,6 @@ public interface PolyTodoItem {
     String getPosition();
     String getStatus();
 
+    boolean isSaveNeeded();
     void saveCompleted();
 }

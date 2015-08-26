@@ -122,6 +122,16 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public List<PolyTodoItem> getSaveNeededTasks() {
+        List<PolyTodoItem> saveNeededTasks = new ArrayList<>();
+        for (PolyTodoItem item : localList) {
+            if (item.isSaveNeeded())
+                saveNeededTasks.add(item);
+        }
+        return saveNeededTasks;
+    }
+
+    @Override
     public String getTitle() {
         return taskList.getTitle();
     }
