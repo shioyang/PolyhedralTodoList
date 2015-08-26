@@ -41,7 +41,7 @@ public class PolyListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d("PolyListActivity", "ListView.onItemClick is called");
+                Log.d("PolyListActivity", "ListView.onItemClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
                 boolean isSuccess = polyMainList.moveUpTask(polyTodoItem, polyTodoList);
                 if (isSuccess) {
@@ -53,9 +53,13 @@ public class PolyListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long idl) {
-                Log.d("PolyListActivity", "ListView.onItemLongClick is called");
+                Log.d("PolyListActivity", "ListView.onItemLongClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                polyMainList.moveDownTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMainList.moveDownTask(polyTodoItem, polyTodoList);
+                if (isSuccess) {
+                    polyTodoItems = polyTodoList.getLocalList();
+                    refreshView();
+                }
                 return true; //true: consume this event here
             }
         });

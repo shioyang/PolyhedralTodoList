@@ -142,20 +142,17 @@ public class PolyMainListImpl implements PolyMainList {
     @Override
     public Boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "Start moveUpTask 1");
-        String previousId = list.getPreviousTaskId(item);
-        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + previousId);
-        if (!previousId.isEmpty()) {
-            // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
-//            PolyTodoItemExecutor.move(tasksService, item.getId(), list.getId(), previousId);
-
+        PolyTodoItem previous = list.getPreviousTask(item);
+        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + (previous != null ? previous.getId() : "(previous is null)"));
+        if (previous != null) {
             try {
-                PolyTodoItem previous = list.getPreviousTask(item);
                 // Update global
                 while (isHigherPriority(previous, item)) {   // while (previous.position > item.position)
                     moveUpTaskForGlobal(item);
                 }
+
                 // Update local
-                moveUpTaskForLocal(list, item.getId());
+                moveUpTaskForLocal(list, item.getTask(), previous.getId());
 
                 // Save
                 // for task in list
@@ -247,9 +244,12 @@ public class PolyMainListImpl implements PolyMainList {
         Log.d("PolyMainListImpl", "End moveUpTaskForGlobal()");
     }
 
-    private void moveUpTaskForLocal(PolyTodoList list, String id) {
+    private void moveUpTaskForLocal(PolyTodoList list, Task task, String previousId) {
+        // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
+        PolyTodoItemExecutor.move(tasksService, list.getId(), task, previousId);
+
         // Update local position in PolyTodoList
-        list.moveUpTask(id);
+        list.moveUpTask(task.getId());
     }
 
     private void saveChangedTasks() {

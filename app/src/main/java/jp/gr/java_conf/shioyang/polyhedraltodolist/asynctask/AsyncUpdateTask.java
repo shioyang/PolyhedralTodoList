@@ -1,6 +1,7 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
@@ -23,7 +24,9 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean isSuccess = false;
         try {
-            Task result = tasksService.tasks().update(listId, task.getId(), task).execute();
+            synchronized (task) {
+                Task result = tasksService.tasks().update(listId, task.getId(), task).execute();
+            }
             isSuccess = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,6 +44,7 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     public static void run(Tasks tasksService, Task task, String listId) {
+        Log.d("AsyncUpdateTask", "task: " + task.getId() + " listId: " + listId);
         new AsyncUpdateTask(tasksService, task, listId).execute();
     }
 }

@@ -17,7 +17,7 @@ public class PolyTodoItemExecutor {
         AsyncUpdateTask.run(tasksService, task, listId);
     }
 
-    public static void move(Tasks tasksService, String listId, String taskId, String previousTaskId) {
-        AsyncMoveTask.run(tasksService, listId, taskId, previousTaskId);
+    public static void move(Tasks tasksService, String listId, Task task, String previousTaskId) {
+        AsyncMoveTask.run(tasksService, listId, task, previousTaskId);
     }
 }
