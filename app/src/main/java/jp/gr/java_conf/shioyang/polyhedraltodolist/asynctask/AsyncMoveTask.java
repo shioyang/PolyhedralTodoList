@@ -30,9 +30,10 @@ public class AsyncMoveTask extends AsyncTask<Void, Void, Boolean> {
         try {
             synchronized (task) {
                 Task result = tasksService.tasks().move(listId, task.getId()).setPrevious(previousTaskId).execute();
-                task.setPosition(result.getPosition());
+//                task.setPosition(result.getPosition());
+//                isSuccess = true;
+                isSuccess = PolyUtil.copyTaskValues(result, task);
             }
-            isSuccess = true;
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
