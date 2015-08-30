@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_add:
-                // TODO: Add list
                 AsyncAddList.run(this);
                 return true;
             case R.id.action_remove_list:

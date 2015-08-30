@@ -19,5 +19,6 @@
 
     <string name="buttonMainText">Polyhedral TODO List</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_edit_titles">Edit Titles</string>
 
 </resources>
