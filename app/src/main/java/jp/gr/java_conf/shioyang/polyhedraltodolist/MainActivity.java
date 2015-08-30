@@ -26,9 +26,11 @@ import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.TaskList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncAddList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
@@ -160,6 +162,12 @@ public class MainActivity extends AppCompatActivity {
         AsyncLoadTasks.run(this, polyMainList, taskLists, /*isReset*/true);
     }
 
+    public void completeAddNewList(TaskList newTaskList) {
+        List<TaskList> tls = new ArrayList<>();
+        tls.add(newTaskList);
+        AsyncLoadTasks.run(this, polyMainList, tls, /*isReset*/false);
+    }
+
     public void refreshView() {
         if (adapter == null) {
             adapter = new TaskListsArrayAdapter(this, 0, taskLists);
@@ -186,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_add:
                 // TODO: Add list
+                AsyncAddList.run(this);
                 return true;
             case R.id.action_remove_list:
                 // TODO: Remove list
