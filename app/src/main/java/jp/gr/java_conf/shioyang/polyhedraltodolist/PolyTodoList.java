@@ -30,6 +30,7 @@ public interface PolyTodoList {
     String getTitle();
     String getTaskId(int position);
     PolyTodoItem getPreviousTask(PolyTodoItem item);
+    PolyTodoItem getNextTask(PolyTodoItem item);
     String getPreviousTaskId(PolyTodoItem item);
     List<PolyTodoItem> getSaveNeededTasks();
     /* UPDATE */

@@ -36,9 +36,9 @@ public interface PolyMainList {
     String getPolyTodoListId(int num) throws IndexOutOfBoundsException;
     PolyTodoList getPolyTodoList(String listId);
     /*** UPDATE ***/
-    Boolean moveUpTask(PolyTodoItem item, PolyTodoList list);
-    Boolean moveUpTask(String taskId, String listId);
-    Boolean moveDownTask(PolyTodoItem item, PolyTodoList list);
-    Boolean moveDownTask(String taskId, String listId);
+    boolean moveUpTask(PolyTodoItem item, PolyTodoList list);
+    boolean moveUpTask(String taskId, String listId);
+    boolean moveDownTask(PolyTodoItem item, PolyTodoList list);
+    boolean moveDownTask(String taskId, String listId);
     /*** DELETE ***/
 }

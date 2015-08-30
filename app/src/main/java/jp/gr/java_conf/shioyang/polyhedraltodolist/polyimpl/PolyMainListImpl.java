@@ -140,7 +140,7 @@ public class PolyMainListImpl implements PolyMainList {
     }
 
     @Override
-    public Boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
+    public boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "Start moveUpTask 1");
         PolyTodoItem previous = list.getPreviousTask(item);
         Log.d("PolyMainListImpl", "Retrieved previous task ID: " + (previous != null ? previous.getId() : "(previous is null)"));
@@ -172,26 +172,47 @@ public class PolyMainListImpl implements PolyMainList {
     }
 
     @Override
-    public Boolean moveUpTask(String taskId, String listId) {
+    public boolean moveUpTask(String taskId, String listId) {
         Log.d("PolyMainListImpl", "moveUpTask 2 [not implemented]");
-        return null;
+        return true;
     }
 
     @Override
-    public Boolean moveDownTask(PolyTodoItem item, PolyTodoList list) {
-        Log.d("PolyMainListImpl", "moveDownTask 1 [not implemented]");
-        // call task.move needs:
-        //     1: task list ID
-        //     2: task ID
-        //     3: previous ID (lower sibling task ID)
+    public boolean moveDownTask(PolyTodoItem item, PolyTodoList list) {
+        Log.d("PolyMainListImpl", "moveDownTask 1");
+        PolyTodoItem next = list.getNextTask(item);
+        Log.d("PolyMainListImpl", "Retrieved next task ID: " + (next != null ? next.getId() : "(next is null)"));
+        if (next != null) {
+            try {
+                // Update global
+                while (isHigherPriority(item, next)) {   // while (item.position > next.position)
+                    moveDownTaskForGlobal(item);
+                }
 
-        return null;
+                // Update local
+                moveDownTaskForLocal(list, item.getTask(), next.getId());
+
+                // Save
+                // for task in list
+                //    find task which isNeedSave is true
+                //    async title update task
+                saveChangedTasks();
+
+            } catch (TaskMismatchPositionsException e) {
+                Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
+                e.printStackTrace();
+                Log.d("PolyMainListImpl", "End moveDownTask 1 with false");
+                return false;
+            }
+        }
+        Log.d("PolyMainListImpl", "End moveDownTask 1 with true");
+        return true;
     }
 
     @Override
-    public Boolean moveDownTask(String taskId, String listId) {
+    public boolean moveDownTask(String taskId, String listId) {
         Log.d("PolyMainListImpl", "moveDownTask 2 [not implemented]");
-        return null;
+        return false;
     }
 
     // ===========================================
@@ -207,18 +228,18 @@ public class PolyMainListImpl implements PolyMainList {
         Collections.sort(globalTodoItems, comparator); // Sort by global position
     }
 
-    private boolean isHigherPriority(PolyTodoItem previous, PolyTodoItem item) throws TaskMismatchPositionsException {
+    private boolean isHigherPriority(PolyTodoItem mayHigh, PolyTodoItem mayLow) throws TaskMismatchPositionsException {
         boolean isHigher = false;
-        if (previous != null && item != null) {
-            int previousPosition = previous.getGlobalPosition();
-            int itemPosition = item.getGlobalPosition();
-            if (!verifyPosition(previousPosition, previous) || !verifyPosition(itemPosition, item)) {
+        if (mayHigh != null && mayLow != null) {
+            int mayHighPosition = mayHigh.getGlobalPosition();
+            int mayLowPosition = mayLow.getGlobalPosition();
+            if (!verifyPosition(mayHighPosition, mayHigh) || !verifyPosition(mayLowPosition, mayLow)) {
                 throw new TaskMismatchPositionsException("Position mismatch.");
             }
-            if (previousPosition < itemPosition) // Small digit is high priority.
-                return true;
+            if (mayHighPosition < mayLowPosition) // Small digit is high priority.
+                isHigher = true;
         }
-        return false;
+        return isHigher;
     }
 
     private boolean verifyPosition(int todoItemPosition, PolyTodoItem item) {
@@ -244,12 +265,37 @@ public class PolyMainListImpl implements PolyMainList {
         Log.d("PolyMainListImpl", "End moveUpTaskForGlobal()");
     }
 
+    private void moveDownTaskForGlobal(PolyTodoItem item) {
+        Log.d("PolyMainListImpl", "Start moveDownTaskForGlobal()");
+        // Swap in globalTodoItems
+        int index = globalTodoItems.indexOf(item);
+        if (index > 0) {
+            Log.d("PolyMainListImpl", "Move down the item which index is " + index + ".");
+            PolyTodoItem next = globalTodoItems.get(index + 1);
+            // Update globalTodItems list
+            globalTodoItems.set(index, next);
+            globalTodoItems.set(index + 1, item);
+            // Update global position in each PolyTodoItem
+            next.setGlobalPosition(index);
+            item.setGlobalPosition(index + 1);
+        }
+        Log.d("PolyMainListImpl", "End moveDownTaskForGlobal()");
+    }
+
     private void moveUpTaskForLocal(PolyTodoList list, Task task, String previousId) {
         // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
         PolyTodoItemExecutor.move(tasksService, list.getId(), task, previousId);
 
         // Update local position in PolyTodoList
         list.moveUpTask(task.getId());
+    }
+
+    private void moveDownTaskForLocal(PolyTodoList list, Task task, String nextId) {
+        // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
+        PolyTodoItemExecutor.move(tasksService, list.getId(), task, nextId);
+
+        // Update local position in PolyTodoList
+        list.moveDownTask(task.getId());
     }
 
     private void saveChangedTasks() {

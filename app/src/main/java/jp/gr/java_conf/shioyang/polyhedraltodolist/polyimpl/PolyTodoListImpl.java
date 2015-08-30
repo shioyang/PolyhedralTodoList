@@ -122,6 +122,23 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public PolyTodoItem getNextTask(PolyTodoItem item) {
+        PolyTodoItem rtnTodoItem = null;
+        if (item != null) {
+            String itemId = item.getId();
+            for (int i = 0; i < localList.size() - 1; i++) {
+                String currentId = localList.get(i).getId();
+                PolyTodoItem next = localList.get(i + 1);
+                if (currentId.equals(itemId)) {
+                    rtnTodoItem = next;
+                    break;
+                }
+            }
+        }
+        return rtnTodoItem;
+    }
+
+    @Override
     public String getPreviousTaskId(PolyTodoItem item) {
         PolyTodoItem previous = getPreviousTask(item);
         return (previous != null) ? previous.getId() : "";
@@ -171,7 +188,19 @@ public class PolyTodoListImpl implements PolyTodoList {
 
     @Override
     public void moveDownTask(String id) {
-
+        PolyTodoItem item = getTaskById(id);
+        if (item != null) {
+            int index = item.getLocalPosition();
+            if (index > 0) {
+                // Swap position in localList
+                PolyTodoItem next = localList.get(index + 1);
+                localList.set(index, next);
+                localList.set(index + 1, item);
+                // Update local position in each PolyTodoItems
+                next.setLocalPosition(index);
+                item.setLocalPosition(index + 1);
+            }
+        }
     }
 
     @Override
