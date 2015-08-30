@@ -21,30 +21,33 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
     final MainActivity activity;
     final PolyMainList polyMainList;
     final Tasks client;
+    final boolean isReset;
     private final ProgressBar progressBar;
 
     private List<TaskList> taskLists;
 
-    public AsyncLoadTasks(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists) {
+    public AsyncLoadTasks(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists, boolean isReset) {
         super();
         this.activity = mainActivity;
         this.polyMainList = polyMainList;
         client = mainActivity.getService();
         progressBar = (ProgressBar) mainActivity.findViewById(R.id.progressBarMain);
         this.taskLists = taskLists;
+        this.isReset = isReset;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         progressBar.setVisibility(View.VISIBLE);
-        polyMainList.reset();
+        if (isReset)
+            polyMainList.reset();
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        List<String> result = new ArrayList<>();
         try {
+
             for (TaskList taskList : taskLists) {
                 List<Task> tasks = client.tasks().list(taskList.getId()).setFields("items(id,title,parent,position,status)").execute().getItems();
                 if (tasks != null) {
@@ -52,8 +55,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
                     polyMainList.addTodoList(taskList, tasks, R.color.cherry);
                 }
             }
-
             return true;
+
         } catch (UserRecoverableAuthIOException userRecoverableAuthIOException) {
             activity.startActivityForResult(userRecoverableAuthIOException.getIntent(), activity.REQUEST_AUTHORIZATION);
             // The result is handled in MainActivity.onActivityResult().
@@ -73,8 +76,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
             activity.refreshView();
     }
 
-    public static void run(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists) {
-        new AsyncLoadTasks(mainActivity, polyMainList, taskLists).execute();
+    public static void run(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists, boolean isReset) {
+        new AsyncLoadTasks(mainActivity, polyMainList, taskLists, isReset).execute();
     }
 }
 

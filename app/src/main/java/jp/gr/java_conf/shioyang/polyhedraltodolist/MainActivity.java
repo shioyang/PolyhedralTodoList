@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------
     public void completeLoadLists() {
-        AsyncLoadTasks.run(this, polyMainList, taskLists);
+        AsyncLoadTasks.run(this, polyMainList, taskLists, /*isReset*/true);
     }
 
     public void refreshView() {
@@ -239,18 +239,5 @@ public class MainActivity extends AppCompatActivity {
 
     private void chooseAccount() {
         startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
-    }
-
-    private boolean startListActivity(int num) {
-        try {
-            Intent intent = new Intent(this, PolyListActivity.class);
-            intent.putExtra(List_ID, polyMainList.getPolyTodoListId(num));
-            startActivity(intent);
-            overridePendingTransition(R.anim.abc_slide_in_bottom, 0);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return false; //???
-        }
-        return true;
     }
 }
