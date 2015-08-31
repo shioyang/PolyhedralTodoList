@@ -19,9 +19,7 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 public class PolyListActivity extends AppCompatActivity {
     private String list_id = null;
 
-    // test
     private static final String List_ID = "LIST_ID";
-    // test
 
     PolyMainList polyMainList;
     PolyTodoList polyTodoList;
@@ -30,6 +28,7 @@ public class PolyListActivity extends AppCompatActivity {
 
     ListView listView;
     PolyTodoItemArrayAdapter adapter;
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +89,35 @@ public class PolyListActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        this.menu = menu;
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
             case R.id.action_edit_titles:
+                // Set editMode true, and refreshView
+                if (menu != null) {
+                    MenuItem doneItem = menu.getItem(R.id.action_edit_titles_done);
+                    if (doneItem != null) {
+                        doneItem.setVisible(true);
+                        item.setVisible(false);
+                    }
+                }
+                return true;
+            case R.id.action_edit_titles_done:
+                // Set editMode false, and refreshView
+                if (menu != null) {
+                    MenuItem editItem = menu.getItem(R.id.action_edit_titles);
+                    if (editItem != null) {
+                        editItem.setVisible(true);
+                        item.setVisible(false);
+                    }
+                }
                 return true;
             case R.id.action_settings:
                 return true;
