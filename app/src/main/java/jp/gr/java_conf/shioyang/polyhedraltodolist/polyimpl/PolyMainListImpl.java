@@ -215,6 +215,17 @@ public class PolyMainListImpl implements PolyMainList {
         return false;
     }
 
+    @Override
+    public void saveChangedTasks() {
+        for (PolyTodoList list : todoLists) {
+            List<PolyTodoItem> savedTasks = list.getSaveNeededTasks();
+            for (PolyTodoItem saveItem : savedTasks) {
+                PolyTodoItemExecutor.update(tasksService, saveItem.getTask(), list.getId());
+                saveItem.saveCompleted(); // TODO: If success, saveCompleted. If not, try again.
+            }
+        }
+    }
+
     // ===========================================
     // PRIVATE
     // ===========================================
@@ -298,14 +309,5 @@ public class PolyMainListImpl implements PolyMainList {
         list.moveDownTask(task.getId());
     }
 
-    private void saveChangedTasks() {
-        for (PolyTodoList list : todoLists) {
-            List<PolyTodoItem> savedTasks = list.getSaveNeededTasks();
-            for (PolyTodoItem saveItem : savedTasks) {
-                PolyTodoItemExecutor.update(tasksService, saveItem.getTask(), list.getId());
-                saveItem.saveCompleted(); // TODO: If success, saveCompleted. If not, try again.
-            }
-        }
-    }
 
 }

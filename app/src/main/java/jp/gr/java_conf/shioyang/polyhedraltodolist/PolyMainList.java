@@ -40,5 +40,7 @@ public interface PolyMainList {
     boolean moveUpTask(String taskId, String listId);
     boolean moveDownTask(PolyTodoItem item, PolyTodoList list);
     boolean moveDownTask(String taskId, String listId);
+
+    void saveChangedTasks();
     /*** DELETE ***/
 }

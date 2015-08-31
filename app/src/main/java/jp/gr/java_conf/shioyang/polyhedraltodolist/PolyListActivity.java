@@ -111,6 +111,7 @@ public class PolyListActivity extends AppCompatActivity {
                 refreshView();
                 return true;
             case R.id.action_edit_titles_done:
+                polyMainList.saveChangedTasks();
                 editMode = false;
                 manageMenuItems();
                 refreshView();
