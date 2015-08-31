@@ -29,6 +29,7 @@ public class PolyListActivity extends AppCompatActivity {
     ListView listView;
     PolyTodoItemArrayAdapter adapter;
     Menu menu;
+    boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,11 @@ public class PolyListActivity extends AppCompatActivity {
     }
 
     private void refreshView() {
-        adapter = new PolyTodoItemArrayAdapter(this, 0, polyTodoItems);
+        if (editMode) {
+            adapter = new PolyTodoItemEditArrayAdapter(this, 0, polyTodoItems);
+        } else {
+            adapter = new PolyTodoItemArrayAdapter(this, 0, polyTodoItems);
+        }
         listView.setAdapter(adapter);
     }
 
@@ -100,29 +105,28 @@ public class PolyListActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_edit_titles:
-                // Set editMode true, and refreshView
-                if (menu != null) {
-                    MenuItem doneItem = menu.getItem(R.id.action_edit_titles_done);
-                    if (doneItem != null) {
-                        doneItem.setVisible(true);
-                        item.setVisible(false);
-                    }
-                }
+                editMode = true;
+                manageMenuItems();
+                refreshView();
                 return true;
             case R.id.action_edit_titles_done:
-                // Set editMode false, and refreshView
-                if (menu != null) {
-                    MenuItem editItem = menu.getItem(R.id.action_edit_titles);
-                    if (editItem != null) {
-                        editItem.setVisible(true);
-                        item.setVisible(false);
-                    }
-                }
+                editMode = false;
+                manageMenuItems();
+                refreshView();
                 return true;
             case R.id.action_settings:
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void manageMenuItems() {
+        if (menu != null) {
+            MenuItem editItem = menu.getItem(R.id.action_edit_titles);
+            MenuItem doneItem = menu.getItem(R.id.action_edit_titles_done);
+            editItem.setVisible(!editMode);
+            doneItem.setVisible(editMode);
+        }
     }
 }
