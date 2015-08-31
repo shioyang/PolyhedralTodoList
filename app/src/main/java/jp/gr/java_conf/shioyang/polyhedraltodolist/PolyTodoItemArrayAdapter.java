@@ -20,7 +20,8 @@ public class PolyTodoItemArrayAdapter extends ArrayAdapter<PolyTodoItem> {
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
-        createConvertView(convertView);
+        if (convertView == null)
+            convertView = inflater.inflate(R.layout.list_item, null);
 
         PolyTodoItem polyTodoItem = getItem(position);
 
@@ -40,11 +41,5 @@ public class PolyTodoItemArrayAdapter extends ArrayAdapter<PolyTodoItem> {
 //        });
 
         return convertView;
-    }
-
-    protected void createConvertView(View convertView) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item, null);
-        }
     }
 }

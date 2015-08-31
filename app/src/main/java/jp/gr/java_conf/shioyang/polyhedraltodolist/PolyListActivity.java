@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class PolyListActivity extends AppCompatActivity {
     List<PolyTodoItem> polyTodoItems;
 
     ListView listView;
-    PolyTodoItemArrayAdapter adapter;
+    ArrayAdapter<PolyTodoItem> adapter;
     Menu menu;
     boolean editMode = false;
 
@@ -123,8 +124,8 @@ public class PolyListActivity extends AppCompatActivity {
 
     private void manageMenuItems() {
         if (menu != null) {
-            MenuItem editItem = menu.getItem(R.id.action_edit_titles);
-            MenuItem doneItem = menu.getItem(R.id.action_edit_titles_done);
+            MenuItem editItem = menu.findItem(R.id.action_edit_titles);
+            MenuItem doneItem = menu.findItem(R.id.action_edit_titles_done);
             editItem.setVisible(!editMode);
             doneItem.setVisible(editMode);
         }
