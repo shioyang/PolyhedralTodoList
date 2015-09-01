@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_add:
+            case R.id.action_add_list:
                 AsyncAddList.run(this);
                 return true;
             case R.id.action_remove_list:
