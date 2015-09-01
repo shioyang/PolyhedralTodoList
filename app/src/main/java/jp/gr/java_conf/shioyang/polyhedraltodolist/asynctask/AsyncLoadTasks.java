@@ -10,12 +10,12 @@ import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyTodoColorManager;
 
 public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
     final MainActivity activity;
@@ -51,8 +51,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
             for (TaskList taskList : taskLists) {
                 List<Task> tasks = client.tasks().list(taskList.getId()).setFields("items(id,title,parent,position,status)").execute().getItems();
                 if (tasks != null) {
-                    // TODO: Provide different color
-                    polyMainList.addTodoList(taskList, tasks, R.color.cherry);
+                    int color = PolyTodoColorManager.getColor(taskList.getId(), activity);
+                    polyMainList.addTodoList(taskList, tasks, color);
                 }
             }
             return true;
