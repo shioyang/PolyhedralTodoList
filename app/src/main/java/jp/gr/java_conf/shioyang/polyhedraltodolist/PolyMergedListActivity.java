@@ -27,16 +27,15 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMergedListImpl;
 
 
 public class PolyMergedListActivity extends AppCompatActivity {
-    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private final static String PREF_ACCOUNT_NAME = "Pref_ColorManager";
+    private static final String PREF_KEY_ACCOUNT_NAME = "accountName";
     private static final String APPLICATION_NAME = "PolyhedralTodoList/1.0";
 
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 0;
     public static final int REQUEST_AUTHORIZATION = 1;
     private static final int REQUEST_ACCOUNT_PICKER = 2;
 
-    // test
     private static final String List_ID = "LIST_ID";
-    // test
 
     final HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
     final GsonFactory gsonFactory = GsonFactory.getDefaultInstance();
@@ -47,9 +46,6 @@ public class PolyMergedListActivity extends AppCompatActivity {
 
     ListView listView;
     PolyTodoItemArrayAdapter adapter;
-    //    ArrayAdapter<PolyTodoItem> adapter;
-//    ArrayAdapter<String> adapter;
-    List<String> tasksList;
     List<PolyTodoItem> polyTodoItems;
 
 //    List<MenuItem> disabledMenuItems;
@@ -105,9 +101,9 @@ public class PolyMergedListActivity extends AppCompatActivity {
                     String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         credential.setSelectedAccountName(accountName);
-                        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences pref = getSharedPreferences(PREF_ACCOUNT_NAME, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.putString(PREF_KEY_ACCOUNT_NAME, accountName);
                         editor.apply();
 //                        AsyncLoadTasks.run(this, polyMainList);
                     }
@@ -145,9 +141,6 @@ public class PolyMergedListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {

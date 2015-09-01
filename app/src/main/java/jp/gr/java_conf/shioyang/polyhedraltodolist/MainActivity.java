@@ -37,7 +37,8 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMergedListImpl;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private final static String PREF_ACCOUNT_NAME = "Pref_ColorManager";
+    private static final String PREF_KEY_ACCOUNT_NAME = "accountName";
     private static final String APPLICATION_NAME = "PolyhedralTodoList/1.0";
 
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 0;
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Google Accounts
         credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(TasksScopes.TASKS));
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        credential.setSelectedAccountName(prefs.getString(PREF_ACCOUNT_NAME, null));
+        SharedPreferences prefs = getSharedPreferences(PREF_ACCOUNT_NAME, Context.MODE_PRIVATE);
+        credential.setSelectedAccountName(prefs.getString(PREF_KEY_ACCOUNT_NAME, null));
 
         // Tasks client
         Tasks service = new Tasks.Builder(httpTransport, gsonFactory, credential).setApplicationName(APPLICATION_NAME).build();
@@ -138,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
                     String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         credential.setSelectedAccountName(accountName);
-                        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences pref = getSharedPreferences(PREF_ACCOUNT_NAME, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.putString(PREF_KEY_ACCOUNT_NAME, accountName);
                         editor.apply();
                         button.setEnabled(false);
                         AsyncLoadLists.run(this);
@@ -187,9 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {
