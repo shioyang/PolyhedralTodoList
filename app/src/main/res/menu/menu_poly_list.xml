@@ -6,7 +6,7 @@
     <item android:id="@+id/action_edit_titles" android:title="@string/action_edit_titles"
         android:orderInCategory="100" app:showAsAction="always" />
     <item android:id="@+id/action_edit_titles_done" android:title="@string/action_edit_titles_done"
-        android:orderInCategory="100" app:showAsAction="always" />
+        android:orderInCategory="100" app:showAsAction="always" android:visible="false" />
 
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
