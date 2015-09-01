@@ -1,6 +1,5 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.api.services.tasks.Tasks;
@@ -8,8 +7,7 @@ import com.google.api.services.tasks.model.Task;
 
 import java.io.IOException;
 
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyUtil;
 
 public class AsyncAddTask extends AsyncTask<Void, Void, Boolean> {
     Tasks tasksService;

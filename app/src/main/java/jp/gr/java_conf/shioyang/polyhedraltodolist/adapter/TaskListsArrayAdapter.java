@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,8 @@ import com.google.api.services.tasks.model.TaskList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
 public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     private LayoutInflater inflater = null;

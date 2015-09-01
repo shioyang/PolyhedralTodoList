@@ -8,8 +8,7 @@ import com.google.api.services.tasks.model.Task;
 
 import java.io.IOException;
 
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyUtil;
 
 public class AsyncMoveTask extends AsyncTask<Void, Void, Boolean> {
     Tasks tasksService;

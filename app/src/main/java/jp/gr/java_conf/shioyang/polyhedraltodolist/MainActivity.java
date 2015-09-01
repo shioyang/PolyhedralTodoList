@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.TaskListsArrayAdapter;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncAddList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;

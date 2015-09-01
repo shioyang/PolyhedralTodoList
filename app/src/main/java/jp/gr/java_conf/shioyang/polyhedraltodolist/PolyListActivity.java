@@ -14,6 +14,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemArrayAdapter;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemEditArrayAdapter;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 
 

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
 public class PolyTodoItemArrayAdapter extends ArrayAdapter<PolyTodoItem> {
     protected LayoutInflater inflater = null;

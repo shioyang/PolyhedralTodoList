@@ -1,4 +1,4 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl;
 
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;

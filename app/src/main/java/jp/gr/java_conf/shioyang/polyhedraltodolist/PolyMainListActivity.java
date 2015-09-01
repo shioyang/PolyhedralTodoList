@@ -22,6 +22,7 @@ import com.google.api.services.tasks.Tasks;
 
 import java.util.List;
 
+import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemArrayAdapter;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
 
 

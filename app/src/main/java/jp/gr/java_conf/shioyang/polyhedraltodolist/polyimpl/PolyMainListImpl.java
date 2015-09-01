@@ -14,10 +14,8 @@ import java.util.List;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.OnMainListChangedListener;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemComparator;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemExecutor;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.TaskMismatchPositionsException;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.exception.TaskMismatchPositionsException;
 
 /*
  * "Facade" class for PolyTodoList and PolyTodoItem classes.

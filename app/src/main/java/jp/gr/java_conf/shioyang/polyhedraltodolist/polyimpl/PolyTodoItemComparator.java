@@ -1,7 +1,9 @@
-package jp.gr.java_conf.shioyang.polyhedraltodolist;
+package jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl;
 
 import java.io.Serializable;
 import java.util.Comparator;
+
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 
 public class PolyTodoItemComparator implements Comparator<PolyTodoItem>, Serializable {
 

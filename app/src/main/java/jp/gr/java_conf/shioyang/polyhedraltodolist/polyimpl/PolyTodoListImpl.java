@@ -8,10 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItemComparator;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyTodoItemImpl;
 
 public class PolyTodoListImpl implements PolyTodoList {
     static Comparator<PolyTodoItem> comparator;

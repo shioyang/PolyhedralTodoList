@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyUtil;
 
 public class PolyTodoItemImpl implements PolyTodoItem {
     static String regex = "^poly:global(\\d+):local(\\d+):(.*)";
@@ -45,7 +44,7 @@ public class PolyTodoItemImpl implements PolyTodoItem {
 
     @Override
     public boolean isPolyTodoItem() {
-        return globalPosition >= 0 ? true : false;
+        return globalPosition >= 0;
     }
 
     private Matcher matchTaskTitle() {
