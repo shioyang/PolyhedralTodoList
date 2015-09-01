@@ -6,7 +6,7 @@ import com.google.api.services.tasks.model.TaskList;
 
 import java.util.List;
 
-public interface PolyMainList {
+public interface PolyMergedList {
     /*
     List<PolyTodoList> todoLists;
     List<PolyTodoItem> globalTodoItems;
@@ -24,7 +24,7 @@ public interface PolyMainList {
     boolean isLoaded();
 
     List<PolyTodoItem> getGlobalTodoItems();
-    void setOnListChanged(OnMainListChangedListener onMainListChangedListener);
+    void setOnListChanged(OnMergedListChangedListener onMergedListChangedListener);
 
     /*** LIST *****/
     /*** CREATE ***/

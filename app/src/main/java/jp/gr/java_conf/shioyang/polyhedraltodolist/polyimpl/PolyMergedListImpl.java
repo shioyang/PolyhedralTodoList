@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import jp.gr.java_conf.shioyang.polyhedraltodolist.OnMainListChangedListener;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.OnMergedListChangedListener;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMergedList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.exception.TaskMismatchPositionsException;
@@ -21,29 +21,29 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.exception.TaskMismatchPositio
  * "Facade" class for PolyTodoList and PolyTodoItem classes.
  *    - Should not access PolyTodoList and PolyTodoItem directly
  */
-public class PolyMainListImpl implements PolyMainList {
+public class PolyMergedListImpl implements PolyMergedList {
     static Comparator<PolyTodoItem> comparator;
     static {
         comparator = new PolyTodoItemComparator();
     }
 
     private Tasks tasksService = null;
-    private static PolyMainList polyMainList = null;
+    private static PolyMergedList polyMergedList = null;
 
-    OnMainListChangedListener onMainListChangedListener = null;
+    OnMergedListChangedListener onMergedListChangedListener = null;
 
     List<PolyTodoList> todoLists;
     List<PolyTodoItem> globalTodoItems;
 
-    private PolyMainListImpl() {
+    private PolyMergedListImpl() {
         reset();
     }
 
-    public static synchronized PolyMainList getInstance() {
-        if (polyMainList == null) {
-            polyMainList = new PolyMainListImpl();
+    public static synchronized PolyMergedList getInstance() {
+        if (polyMergedList == null) {
+            polyMergedList = new PolyMergedListImpl();
         }
-        return polyMainList;
+        return polyMergedList;
     }
 
     @Override
@@ -114,8 +114,8 @@ public class PolyMainListImpl implements PolyMainList {
     }
 
     @Override
-    public void setOnListChanged(OnMainListChangedListener onMainListChangedListener) {
-        this.onMainListChangedListener = onMainListChangedListener;
+    public void setOnListChanged(OnMergedListChangedListener onMergedListChangedListener) {
+        this.onMergedListChangedListener = onMergedListChangedListener;
     }
 
     @Override
@@ -228,8 +228,8 @@ public class PolyMainListImpl implements PolyMainList {
     // PRIVATE
     // ===========================================
     private void listChanged() {
-        if (onMainListChangedListener != null)
-            onMainListChangedListener.mainListChanged();
+        if (onMergedListChangedListener != null)
+            onMergedListChangedListener.mainListChanged();
     }
 
     private void mergePolyTodoItemsLast(List<PolyTodoItem> polyTodoItems) {

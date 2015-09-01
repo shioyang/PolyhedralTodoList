@@ -13,23 +13,23 @@ import java.io.IOException;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMainList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMergedList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyTodoColorManager;
 
 public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
     final MainActivity activity;
-    final PolyMainList polyMainList;
+    final PolyMergedList polyMergedList;
     final Tasks client;
     final boolean isReset;
     private final ProgressBar progressBar;
 
     private List<TaskList> taskLists;
 
-    public AsyncLoadTasks(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists, boolean isReset) {
+    public AsyncLoadTasks(MainActivity mainActivity, PolyMergedList polyMergedList, List<TaskList> taskLists, boolean isReset) {
         super();
         this.activity = mainActivity;
-        this.polyMainList = polyMainList;
+        this.polyMergedList = polyMergedList;
         client = mainActivity.getService();
         progressBar = (ProgressBar) mainActivity.findViewById(R.id.progressBarMain);
         this.taskLists = taskLists;
@@ -41,7 +41,7 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
         super.onPreExecute();
         progressBar.setVisibility(View.VISIBLE);
         if (isReset)
-            polyMainList.reset();
+            polyMergedList.reset();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
                 List<Task> tasks = client.tasks().list(taskList.getId()).setFields("items(id,title,parent,position,status)").execute().getItems();
                 if (tasks != null) {
                     int color = PolyTodoColorManager.getColor(taskList.getId(), activity);
-                    polyMainList.addTodoList(taskList, tasks, color);
+                    polyMergedList.addTodoList(taskList, tasks, color);
                 }
             }
             return true;
@@ -76,8 +76,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
             activity.refreshView();
     }
 
-    public static void run(MainActivity mainActivity, PolyMainList polyMainList, List<TaskList> taskLists, boolean isReset) {
-        new AsyncLoadTasks(mainActivity, polyMainList, taskLists, isReset).execute();
+    public static void run(MainActivity mainActivity, PolyMergedList polyMergedList, List<TaskList> taskLists, boolean isReset) {
+        new AsyncLoadTasks(mainActivity, polyMergedList, taskLists, isReset).execute();
     }
 }
 

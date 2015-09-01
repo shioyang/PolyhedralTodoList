@@ -42,7 +42,7 @@
                 android:value="jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity" />
         </activity>
         <activity
-            android:name=".PolyMainListActivity"
+            android:name=".PolyMergedListActivity"
             android:label="@string/title_activity_poly_main_list"
             android:parentActivityName=".MainActivity" >
             <meta-data

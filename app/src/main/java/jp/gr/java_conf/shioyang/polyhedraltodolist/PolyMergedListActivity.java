@@ -23,10 +23,10 @@ import com.google.api.services.tasks.Tasks;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemArrayAdapter;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMergedListImpl;
 
 
-public class PolyMainListActivity extends AppCompatActivity {
+public class PolyMergedListActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String APPLICATION_NAME = "PolyhedralTodoList/1.0";
 
@@ -43,7 +43,7 @@ public class PolyMainListActivity extends AppCompatActivity {
 
     GoogleAccountCredential credential;
 
-    PolyMainList polyMainList;
+    PolyMergedList polyMergedList;
 
     ListView listView;
     PolyTodoItemArrayAdapter adapter;
@@ -66,8 +66,8 @@ public class PolyMainListActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listViewPolyList);
 
         // PolyMainList
-        polyMainList = PolyMainListImpl.getInstance();
-        polyMainList.setOnListChanged(new OnMainListChangedListener() {
+        polyMergedList = PolyMergedListImpl.getInstance();
+        polyMergedList.setOnListChanged(new OnMergedListChangedListener() {
             @Override
             public void mainListChanged() {
 //                polyTodoItems = polyMainList.getGlobalTodoItems();
@@ -166,9 +166,9 @@ public class PolyMainListActivity extends AppCompatActivity {
                 // show chooser to select list
 //                item.setEnabled(false);
 //                disabledMenuItems.add(item);
-                String listId = polyMainList.getPolyTodoListId(0); // test
-                polyMainList.addTodoItem(listId);
-                setPolyTodoItems(polyMainList.getGlobalTodoItems());
+                String listId = polyMergedList.getPolyTodoListId(0); // test
+                polyMergedList.addTodoItem(listId);
+                setPolyTodoItems(polyMergedList.getGlobalTodoItems());
                 adapter.notifyDataSetChanged(); // TODO: work???
                 return true;
             case R.id.action_remove:
@@ -187,7 +187,7 @@ public class PolyMainListActivity extends AppCompatActivity {
 
     // ----------
     public Tasks getService() {
-        return polyMainList.getTasksService();
+        return polyMergedList.getTasksService();
     }
 
     public void setPolyTodoItems(List<PolyTodoItem> polyTodoItems) {
@@ -210,23 +210,23 @@ public class PolyMainListActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Dialog dialog = GooglePlayServicesUtil.getErrorDialog(connectionStatusCode, PolyMainListActivity.this, REQUEST_GOOGLE_PLAY_SERVICES);
+                Dialog dialog = GooglePlayServicesUtil.getErrorDialog(connectionStatusCode, PolyMergedListActivity.this, REQUEST_GOOGLE_PLAY_SERVICES);
                 dialog.show();
             }
         });
     }
 
     private void haveGooglePlayServices() {
-        if (polyMainList.getTasksService() == null) {
+        if (polyMergedList.getTasksService() == null) {
             // TODO: New authentication ?
             Log.e("haveGooglePlayServices", "Not implement new authentication");
             chooseAccount();
         } else {
-            if (polyMainList != null && !polyMainList.isLoaded()) {
+            if (polyMergedList != null && !polyMergedList.isLoaded()) {
 //                AsyncLoadTasks.run(this, polyMainList);
             } else {
                 if (polyTodoItems == null) {
-                    polyTodoItems = polyMainList.getGlobalTodoItems();
+                    polyTodoItems = polyMergedList.getGlobalTodoItems();
                 }
                 refreshView();
             }
@@ -240,7 +240,7 @@ public class PolyMainListActivity extends AppCompatActivity {
     private boolean startListActivity(int num) {
         try {
             Intent intent = new Intent(this, PolyListActivity.class);
-            intent.putExtra(List_ID, polyMainList.getPolyTodoListId(num));
+            intent.putExtra(List_ID, polyMergedList.getPolyTodoListId(num));
             startActivity(intent);
             overridePendingTransition(R.anim.abc_slide_in_bottom, 0);
         } catch (IndexOutOfBoundsException e) {

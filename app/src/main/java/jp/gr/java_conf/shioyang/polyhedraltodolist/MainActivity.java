@@ -34,7 +34,7 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.TaskListsArrayAdapter
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncAddList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMergedListImpl;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     GoogleAccountCredential credential;
 
-    PolyMainList polyMainList;
+    PolyMergedList polyMergedList;
 
     ListView listView;
     TaskListsArrayAdapter adapter;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), PolyMainListActivity.class);
+                Intent intent = new Intent(view.getContext(), PolyMergedListActivity.class);
                 startActivity(intent);
             }
         });
@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // PolyMainList
-        polyMainList = PolyMainListImpl.getInstance();
-        polyMainList.setTasksService(service);
+        polyMergedList = PolyMergedListImpl.getInstance();
+        polyMergedList.setTasksService(service);
 
 //        disabledMenuItems = new ArrayList<>();
     }
@@ -160,13 +160,13 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------
     public void completeLoadLists() {
-        AsyncLoadTasks.run(this, polyMainList, taskLists, /*isReset*/true);
+        AsyncLoadTasks.run(this, polyMergedList, taskLists, /*isReset*/true);
     }
 
     public void completeAddNewList(TaskList newTaskList) {
         List<TaskList> tls = new ArrayList<>();
         tls.add(newTaskList);
-        AsyncLoadTasks.run(this, polyMainList, tls, /*isReset*/false);
+        AsyncLoadTasks.run(this, polyMergedList, tls, /*isReset*/false);
     }
 
     public void refreshView() {
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------
     public Tasks getService() {
-        return polyMainList.getTasksService();
+        return polyMergedList.getTasksService();
     }
 
     public void setTaskLists(List<TaskList> taskLists) {

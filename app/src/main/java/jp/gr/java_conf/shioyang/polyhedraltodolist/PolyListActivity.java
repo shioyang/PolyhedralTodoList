@@ -16,7 +16,7 @@ import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemArrayAdapter;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.PolyTodoItemEditArrayAdapter;
-import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMainListImpl;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.polyimpl.PolyMergedListImpl;
 
 
 public class PolyListActivity extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class PolyListActivity extends AppCompatActivity {
 
     private static final String List_ID = "LIST_ID";
 
-    PolyMainList polyMainList;
+    PolyMergedList polyMergedList;
     PolyTodoList polyTodoList;
 
     List<PolyTodoItem> polyTodoItems;
@@ -46,7 +46,7 @@ public class PolyListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d("PolyListActivity", "ListView.onItemClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                boolean isSuccess = polyMainList.moveUpTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMergedList.moveUpTask(polyTodoItem, polyTodoList);
                 if (isSuccess) {
                     polyTodoItems = polyTodoList.getLocalList();
                     refreshView();
@@ -58,7 +58,7 @@ public class PolyListActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long idl) {
                 Log.d("PolyListActivity", "ListView.onItemLongClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                boolean isSuccess = polyMainList.moveDownTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMergedList.moveDownTask(polyTodoItem, polyTodoList);
                 if (isSuccess) {
                     polyTodoItems = polyTodoList.getLocalList();
                     refreshView();
@@ -70,8 +70,8 @@ public class PolyListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         list_id = intent.getStringExtra(List_ID);
         if (list_id != null) {
-            polyMainList = PolyMainListImpl.getInstance();
-            polyTodoList = polyMainList.getPolyTodoList(list_id);
+            polyMergedList = PolyMergedListImpl.getInstance();
+            polyTodoList = polyMergedList.getPolyTodoList(list_id);
             if (polyTodoList != null) {
                 polyTodoItems = new ArrayList<>();
                 polyTodoItems = polyTodoList.getLocalList();
@@ -113,7 +113,7 @@ public class PolyListActivity extends AppCompatActivity {
                 refreshView();
                 return true;
             case R.id.action_edit_titles_done:
-                polyMainList.saveChangedTasks();
+                polyMergedList.saveChangedTasks();
                 editMode = false;
                 manageMenuItems();
                 refreshView();
