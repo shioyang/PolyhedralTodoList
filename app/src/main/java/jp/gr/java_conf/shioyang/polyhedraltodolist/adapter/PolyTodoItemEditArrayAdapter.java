@@ -40,12 +40,10 @@ public class PolyTodoItemEditArrayAdapter extends ArrayAdapter<PolyTodoItem> {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                boolean done = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     polyTodoItem.setJustTitle(textView.getText().toString());
-                    done = true;
                 }
-                return done;
+                return false;
             }
         });
 
