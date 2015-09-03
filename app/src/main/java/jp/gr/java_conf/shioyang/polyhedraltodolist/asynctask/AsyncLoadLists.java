@@ -46,8 +46,6 @@ public class AsyncLoadLists extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         List<String> result = new ArrayList<>();
         try {
-//            TaskLists taskLists = client.tasklists().list().execute();
-//            activity.setTaskLists(taskLists.getItems());
             List<TaskList> taskLists = client.tasklists().list().execute().getItems();
             List<TaskList> newTaskLists = new ArrayList<>();
             for (TaskList taskList : taskLists) {

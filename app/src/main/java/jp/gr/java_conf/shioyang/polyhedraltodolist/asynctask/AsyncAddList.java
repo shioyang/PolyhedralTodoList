@@ -36,7 +36,7 @@ public class AsyncAddList extends AsyncTask<Void, Void, Boolean> {
         try {
 
             TaskList taskList = new TaskList();
-            taskList.setTitle("Poly:New Task List");
+            taskList.setTitle("poly:New Task List");
             TaskList result = tasksService.tasklists().insert(taskList).execute();
             this.result = result;
 
