@@ -37,7 +37,6 @@ public class PolyTodoListImpl implements PolyTodoList {
     public PolyTodoListImpl(TaskList taskList, List<Task> tasks, int color) {
         this.taskList = taskList;
         this.localList = new ArrayList<>();
-        // TODO: Set color
         this.color = color;
         if (taskList != null && tasks != null) {
             String listId = taskList.getId();

@@ -29,7 +29,7 @@ public interface PolyMergedList {
     /*** LIST *****/
     /*** CREATE ***/
     void addTodoList(TaskList taskList);
-    void addTodoList(TaskList taskList, List<Task> tasks, int color) throws Exception;
+    void addTodoList(TaskList taskList, List<Task> tasks, int color);
     void addTodoItem(String listId);
     void insertTodoItem(String listId, int position);
     /*** READ *****/

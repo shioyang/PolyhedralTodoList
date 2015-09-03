@@ -78,17 +78,15 @@ public class PolyMergedListImpl implements PolyMergedList {
     }
 
     @Override
-    public void addTodoList(TaskList taskList, List<Task> tasks, int color) throws Exception {
-        if (taskList == null && tasks == null)
-            throw new Exception();
+    public void addTodoList(TaskList taskList, List<Task> tasks, int color) {
+        if (taskList != null) {
+            PolyTodoList polyTodoList = new PolyTodoListImpl(taskList, tasks != null ? tasks : new ArrayList<Task>(), color);
 
-        PolyTodoList polyTodoList = new PolyTodoListImpl(taskList, tasks, color);
-
-        if (polyTodoList.isPolyTodoList()) {
-            todoLists.add(polyTodoList);
-
-            List<PolyTodoItem> polyTodoItems = polyTodoList.getLocalList();
-            mergePolyTodoItemsLast(polyTodoItems);
+            if (polyTodoList.isPolyTodoList()) {
+                todoLists.add(polyTodoList);
+                List<PolyTodoItem> polyTodoItems = polyTodoList.getLocalList();
+                mergePolyTodoItemsLast(polyTodoItems);
+            }
         }
     }
 

@@ -50,10 +50,8 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
 
             for (TaskList taskList : taskLists) {
                 List<Task> tasks = client.tasks().list(taskList.getId()).setFields("items(id,title,parent,position,status)").execute().getItems();
-                if (tasks != null) {
-                    int color = PolyTodoColorManager.getColor(taskList.getId(), activity);
-                    polyMergedList.addTodoList(taskList, tasks, color);
-                }
+                int color = PolyTodoColorManager.getColor(taskList.getId(), activity);
+                polyMergedList.addTodoList(taskList, tasks, color);
             }
             return true;
 
@@ -61,8 +59,6 @@ public class AsyncLoadTasks extends AsyncTask<Void, Void, Boolean> {
             activity.startActivityForResult(userRecoverableAuthIOException.getIntent(), activity.REQUEST_AUTHORIZATION);
             // The result is handled in MainActivity.onActivityResult().
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) { //from polyMainList.addTodoList(taskList, tasks);
             e.printStackTrace();
         }
         return false; // fail
