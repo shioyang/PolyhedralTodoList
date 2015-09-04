@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -60,6 +62,29 @@ public class PolyMergedListActivity extends AppCompatActivity {
 
         // ListView
         listView = (ListView) findViewById(R.id.listViewPolyList);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d("PolyMergedListActivity", "ListView.onItemClick is called.");
+                boolean isSuccess = polyMergedList.moveUpGlobalTask(position);
+                if (isSuccess) {
+                    polyTodoItems = polyMergedList.getGlobalTodoItems();
+                    refreshView();
+                }
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long idl) {
+                Log.d("PolyMergedListActivity", "ListView.onItemLongClick is called.");
+                boolean isSuccess = polyMergedList.moveDownGlobalTask(position);
+                if (isSuccess) {
+                    polyTodoItems = polyMergedList.getGlobalTodoItems();
+                    refreshView();
+                }
+                return true; //true: consume this event here
+            }
+        });
 
         // PolyMainList
         polyMergedList = PolyMergedListImpl.getInstance();

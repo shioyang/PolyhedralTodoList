@@ -36,6 +36,8 @@ public interface PolyMergedList {
     String getPolyTodoListId(int num) throws IndexOutOfBoundsException;
     PolyTodoList getPolyTodoList(String listId);
     /*** UPDATE ***/
+    boolean moveUpGlobalTask(int globalPosition);
+    boolean moveDownGlobalTask(int globalPosition);
     boolean moveUpLocalTask(PolyTodoItem item, PolyTodoList list);
     boolean moveDownLocalTask(PolyTodoItem item, PolyTodoList list);
 

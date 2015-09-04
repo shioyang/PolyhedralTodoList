@@ -136,6 +136,16 @@ public class PolyMergedListImpl implements PolyMergedList {
     }
 
     @Override
+    public boolean moveUpGlobalTask(int globalPosition) {
+        return false;
+    }
+
+    @Override
+    public boolean moveDownGlobalTask(int globalPosition) {
+        return false;
+    }
+
+    @Override
     public boolean moveUpLocalTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "Start moveUpTask 1");
         PolyTodoItem previous = list.getPreviousTask(item);
