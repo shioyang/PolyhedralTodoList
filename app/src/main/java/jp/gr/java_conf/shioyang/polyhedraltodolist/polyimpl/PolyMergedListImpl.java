@@ -136,7 +136,7 @@ public class PolyMergedListImpl implements PolyMergedList {
     }
 
     @Override
-    public boolean moveUpTask(PolyTodoItem item, PolyTodoList list) {
+    public boolean moveUpLocalTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "Start moveUpTask 1");
         PolyTodoItem previous = list.getPreviousTask(item);
         Log.d("PolyMainListImpl", "Retrieved previous task ID: " + (previous != null ? previous.getId() : "(previous is null)"));
@@ -168,13 +168,7 @@ public class PolyMergedListImpl implements PolyMergedList {
     }
 
     @Override
-    public boolean moveUpTask(String taskId, String listId) {
-        Log.d("PolyMainListImpl", "moveUpTask 2 [not implemented]");
-        return true;
-    }
-
-    @Override
-    public boolean moveDownTask(PolyTodoItem item, PolyTodoList list) {
+    public boolean moveDownLocalTask(PolyTodoItem item, PolyTodoList list) {
         Log.d("PolyMainListImpl", "moveDownTask 1");
         PolyTodoItem next = list.getNextTask(item);
         Log.d("PolyMainListImpl", "Retrieved next task ID: " + (next != null ? next.getId() : "(next is null)"));
@@ -203,12 +197,6 @@ public class PolyMergedListImpl implements PolyMergedList {
         }
         Log.d("PolyMainListImpl", "End moveDownTask 1 with true");
         return true;
-    }
-
-    @Override
-    public boolean moveDownTask(String taskId, String listId) {
-        Log.d("PolyMainListImpl", "moveDownTask 2 [not implemented]");
-        return false;
     }
 
     @Override

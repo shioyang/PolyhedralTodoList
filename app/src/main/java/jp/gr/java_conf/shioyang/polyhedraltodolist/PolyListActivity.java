@@ -46,7 +46,7 @@ public class PolyListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d("PolyListActivity", "ListView.onItemClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                boolean isSuccess = polyMergedList.moveUpTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMergedList.moveUpLocalTask(polyTodoItem, polyTodoList);
                 if (isSuccess) {
                     polyTodoItems = polyTodoList.getLocalList();
                     refreshView();
@@ -58,7 +58,7 @@ public class PolyListActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long idl) {
                 Log.d("PolyListActivity", "ListView.onItemLongClick is called.");
                 PolyTodoItem polyTodoItem = (PolyTodoItem)listView.getItemAtPosition(position);
-                boolean isSuccess = polyMergedList.moveDownTask(polyTodoItem, polyTodoList);
+                boolean isSuccess = polyMergedList.moveDownLocalTask(polyTodoItem, polyTodoList);
                 if (isSuccess) {
                     polyTodoItems = polyTodoList.getLocalList();
                     refreshView();
