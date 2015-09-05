@@ -137,19 +137,42 @@ public class PolyMergedListImpl implements PolyMergedList {
 
     @Override
     public boolean moveUpGlobalTask(int globalPosition) {
+        Log.d("PolyMergedListImpl", "Start moveUpGlobalTask");
+        if (globalPosition <= 0 || globalTodoItems.size() <= globalPosition) {
+            return false;
+        }
+
+        PolyTodoItem item = globalTodoItems.get(globalPosition);
+
+        // Update local
+        //   If different list, do nothing.
+        //   If same list, swap them.
+        PolyTodoItem previous = globalTodoItems.get(globalPosition - 1);
+        if (isSameListTasks(item, previous)) {
+            PolyTodoList list = getPolyTodoList(item.getListId());
+            moveUpTaskForLocal(list, item.getTask(), previous.getId());
+        }
+
+        // Update global
+        moveUpTaskForGlobal(item);
+
+        // Save
+        saveChangedTasks();
+
         return false;
     }
 
     @Override
     public boolean moveDownGlobalTask(int globalPosition) {
+        Log.d("PolyMergedListImpl", "Start moveDownGlobalTask");
         return false;
     }
 
     @Override
     public boolean moveUpLocalTask(PolyTodoItem item, PolyTodoList list) {
-        Log.d("PolyMainListImpl", "Start moveUpTask 1");
+        Log.d("PolyMergedListImpl", "Start moveUpLocalTask");
         PolyTodoItem previous = list.getPreviousTask(item);
-        Log.d("PolyMainListImpl", "Retrieved previous task ID: " + (previous != null ? previous.getId() : "(previous is null)"));
+        Log.d("PolyMergedListImpl", "Retrieved previous task ID: " + (previous != null ? previous.getId() : "(previous is null)"));
         if (previous != null) {
             try {
                 // Update global
@@ -167,21 +190,21 @@ public class PolyMergedListImpl implements PolyMergedList {
                 saveChangedTasks();
 
             } catch (TaskMismatchPositionsException e) {
-                Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
+                Log.e("PolyMergedListImpl", "Position mismatch in moveUpTask().");
                 e.printStackTrace();
-                Log.d("PolyMainListImpl", "End moveUpTask 1 with false");
+                Log.d("PolyMergedListImpl", "End moveUpTask with false");
                 return false;
             }
         }
-        Log.d("PolyMainListImpl", "End moveUpTask 1 with true");
+        Log.d("PolyMergedListImpl", "End moveUpLocalTask with true");
         return true;
     }
 
     @Override
     public boolean moveDownLocalTask(PolyTodoItem item, PolyTodoList list) {
-        Log.d("PolyMainListImpl", "moveDownTask 1");
+        Log.d("PolyMergedListImpl", "Start moveDownLocalTask");
         PolyTodoItem next = list.getNextTask(item);
-        Log.d("PolyMainListImpl", "Retrieved next task ID: " + (next != null ? next.getId() : "(next is null)"));
+        Log.d("PolyMergedListImpl", "Retrieved next task ID: " + (next != null ? next.getId() : "(next is null)"));
         if (next != null) {
             try {
                 // Update global
@@ -199,13 +222,13 @@ public class PolyMergedListImpl implements PolyMergedList {
                 saveChangedTasks();
 
             } catch (TaskMismatchPositionsException e) {
-                Log.e("PolyMainListImpl", "Position mismatch in moveUpTask().");
+                Log.e("PolyMergedListImpl", "Position mismatch in moveUpTask().");
                 e.printStackTrace();
-                Log.d("PolyMainListImpl", "End moveDownTask 1 with false");
+                Log.d("PolyMergedListImpl", "End moveDownTask with false");
                 return false;
             }
         }
-        Log.d("PolyMainListImpl", "End moveDownTask 1 with true");
+        Log.d("PolyMergedListImpl", "End moveDownLocalTask with true");
         return true;
     }
 
@@ -249,16 +272,16 @@ public class PolyMergedListImpl implements PolyMergedList {
 
     private boolean verifyPosition(int todoItemPosition, PolyTodoItem item) {
         int index = globalTodoItems.indexOf(item);
-        Log.d("PolyMainListImpl", "verifyPosition todoItemPosition:" + todoItemPosition + " vs index:" + index);
+        Log.d("PolyMergedListImpl", "verifyPosition todoItemPosition:" + todoItemPosition + " vs index:" + index);
         return (todoItemPosition == index);
     }
 
     private void moveUpTaskForGlobal(PolyTodoItem item) {
-        Log.d("PolyMainListImpl", "Start moveUpTaskForGlobal()");
+        Log.d("PolyMergedListImpl", "Start moveUpTaskForGlobal()");
         // Swap in globalTodoItems
         int index = globalTodoItems.indexOf(item);
         if (index > 0) {
-            Log.d("PolyMainListImpl", "Move up the item which index is " + index + ".");
+            Log.d("PolyMergedListImpl", "Move up the item which index is " + index + ".");
             PolyTodoItem previous = globalTodoItems.get(index - 1);
             // Update globalTodItems list
             globalTodoItems.set(index - 1, item);
@@ -267,15 +290,15 @@ public class PolyMergedListImpl implements PolyMergedList {
             item.setGlobalPosition(index - 1);
             previous.setGlobalPosition(index);
         }
-        Log.d("PolyMainListImpl", "End moveUpTaskForGlobal()");
+        Log.d("PolyMergedListImpl", "End moveUpTaskForGlobal()");
     }
 
     private void moveDownTaskForGlobal(PolyTodoItem item) {
-        Log.d("PolyMainListImpl", "Start moveDownTaskForGlobal()");
+        Log.d("PolyMergedListImpl", "Start moveDownTaskForGlobal()");
         // Swap in globalTodoItems
         int index = globalTodoItems.indexOf(item);
         if (index > 0) {
-            Log.d("PolyMainListImpl", "Move down the item which index is " + index + ".");
+            Log.d("PolyMergedListImpl", "Move down the item which index is " + index + ".");
             PolyTodoItem next = globalTodoItems.get(index + 1);
             // Update globalTodItems list
             globalTodoItems.set(index, next);
@@ -284,7 +307,7 @@ public class PolyMergedListImpl implements PolyMergedList {
             next.setGlobalPosition(index);
             item.setGlobalPosition(index + 1);
         }
-        Log.d("PolyMainListImpl", "End moveDownTaskForGlobal()");
+        Log.d("PolyMergedListImpl", "End moveDownTaskForGlobal()");
     }
 
     private void moveUpTaskForLocal(PolyTodoList list, Task task, String previousId) {
@@ -301,6 +324,10 @@ public class PolyMergedListImpl implements PolyMergedList {
 
         // Update local position in PolyTodoList
         list.moveDownTask(task.getId());
+    }
+
+    private boolean isSameListTasks(PolyTodoItem item, PolyTodoItem previous) {
+        return item.getListId().equals(previous.getListId());
     }
 
 
