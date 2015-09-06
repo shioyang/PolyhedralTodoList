@@ -139,6 +139,7 @@ public class PolyMergedListImpl implements PolyMergedList {
     public boolean moveUpGlobalTask(int globalPosition) {
         Log.d("PolyMergedListImpl", "Start moveUpGlobalTask");
         if (globalPosition <= 0 || globalTodoItems.size() <= globalPosition) {
+            Log.d("PolyMergedListImpl", "End moveUpGlobalTask with false");
             return false;
         }
 
@@ -159,13 +160,37 @@ public class PolyMergedListImpl implements PolyMergedList {
         // Save
         saveChangedTasks();
 
+        Log.d("PolyMergedListImpl", "End moveUpGlobalTask with true");
         return true;
     }
 
     @Override
     public boolean moveDownGlobalTask(int globalPosition) {
         Log.d("PolyMergedListImpl", "Start moveDownGlobalTask");
-        return false;
+        if (globalPosition < 0 || (globalTodoItems.size() - 1) <= globalPosition) {
+            Log.d("PolyMergedListImpl", "End moveDownGlobalTask with false");
+            return false;
+        }
+
+        PolyTodoItem item = globalTodoItems.get(globalPosition);
+
+        // Update local
+        //   If different list, do nothing.
+        //   If same list, swap them.
+        PolyTodoItem next = globalTodoItems.get(globalPosition + 1);
+        if (isSameListTasks(item, next)) {
+            PolyTodoList list = getPolyTodoList(item.getListId());
+            moveDownTaskForLocal(list, item, next);
+        }
+
+        // Update global
+        moveDownTaskForGlobal(item);
+
+        // Save
+        saveChangedTasks();
+
+        Log.d("PolyMergedListImpl", "End moveDownGlobalTask with true");
+        return true;
     }
 
     @Override
@@ -213,7 +238,7 @@ public class PolyMergedListImpl implements PolyMergedList {
                 }
 
                 // Update local
-                moveDownTaskForLocal(list, item.getTask(), next.getId());
+                moveDownTaskForLocal(list, item, next);
 
                 // Save
                 // for task in list
@@ -313,18 +338,26 @@ public class PolyMergedListImpl implements PolyMergedList {
     private void moveUpTaskForLocal(PolyTodoList list, PolyTodoItem item, PolyTodoItem previous) {
         // Call task.move: task list ID, task ID, new previous ID (higher sibling task ID)
         // The current previous task moves down, and the current item becomes the new previous one.
+        //    FROM:              TO:
+        //          previous         item       <<- "previous"'s previous
+        //          item             previous
         PolyTodoItemExecutor.move(tasksService, list.getId(), previous.getTask(), item.getId());
 
         // Update local position in PolyTodoList
         list.moveUpTask(item.getTask().getId());
     }
 
-    private void moveDownTaskForLocal(PolyTodoList list, Task task, String nextId) {
+//    private void moveDownTaskForLocal(PolyTodoList list, Task task, String nextId) {
+    private void moveDownTaskForLocal(PolyTodoList list, PolyTodoItem item, PolyTodoItem next) {
         // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
-        PolyTodoItemExecutor.move(tasksService, list.getId(), task, nextId);
+        // The current task moves up, and the current next task becomes the new previous one.
+        //    FROM:              TO:
+        //          item             next   <<- "item"'s previous
+        //          next             item
+        PolyTodoItemExecutor.move(tasksService, list.getId(), item.getTask(), next.getId());
 
         // Update local position in PolyTodoList
-        list.moveDownTask(task.getId());
+        list.moveDownTask(item.getTask().getId());
     }
 
     private boolean isSameListTasks(PolyTodoItem item, PolyTodoItem previous) {
