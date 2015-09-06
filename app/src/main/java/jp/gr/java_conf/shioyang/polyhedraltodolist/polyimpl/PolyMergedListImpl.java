@@ -150,7 +150,7 @@ public class PolyMergedListImpl implements PolyMergedList {
         PolyTodoItem previous = globalTodoItems.get(globalPosition - 1);
         if (isSameListTasks(item, previous)) {
             PolyTodoList list = getPolyTodoList(item.getListId());
-            moveUpTaskForLocal(list, item.getTask(), previous.getId());
+            moveUpTaskForLocal(list, item, previous);
         }
 
         // Update global
@@ -159,7 +159,7 @@ public class PolyMergedListImpl implements PolyMergedList {
         // Save
         saveChangedTasks();
 
-        return false;
+        return true;
     }
 
     @Override
@@ -181,7 +181,7 @@ public class PolyMergedListImpl implements PolyMergedList {
                 }
 
                 // Update local
-                moveUpTaskForLocal(list, item.getTask(), previous.getId());
+                moveUpTaskForLocal(list, item, previous);
 
                 // Save
                 // for task in list
@@ -310,12 +310,13 @@ public class PolyMergedListImpl implements PolyMergedList {
         Log.d("PolyMergedListImpl", "End moveDownTaskForGlobal()");
     }
 
-    private void moveUpTaskForLocal(PolyTodoList list, Task task, String previousId) {
-        // Call task.move: task list ID, task ID, previous ID (higher sibling task ID)
-        PolyTodoItemExecutor.move(tasksService, list.getId(), task, previousId);
+    private void moveUpTaskForLocal(PolyTodoList list, PolyTodoItem item, PolyTodoItem previous) {
+        // Call task.move: task list ID, task ID, new previous ID (higher sibling task ID)
+        // The current previous task moves down, and the current item becomes the new previous one.
+        PolyTodoItemExecutor.move(tasksService, list.getId(), previous.getTask(), item.getId());
 
         // Update local position in PolyTodoList
-        list.moveUpTask(task.getId());
+        list.moveUpTask(item.getTask().getId());
     }
 
     private void moveDownTaskForLocal(PolyTodoList list, Task task, String nextId) {
