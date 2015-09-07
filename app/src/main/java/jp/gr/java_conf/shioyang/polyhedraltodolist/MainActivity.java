@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     TaskListsArrayAdapter adapter;
     List<TaskList> taskLists;
-    Button button;
+    TextView polyTextView;
 
     // ===========================================
     // LIFECYCLE
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = (Button) findViewById(R.id.buttonMain);
-        button.setOnClickListener(new View.OnClickListener() {
+        polyTextView = (TextView) findViewById(R.id.textViewMain);
+        polyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), PolyMergedListActivity.class);
@@ -143,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString(PREF_KEY_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        button.setEnabled(false);
+                        polyTextView.setEnabled(false);
                         AsyncLoadLists.run(this);
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION: // In AsyncLoadTasks, when access right is needed. UserRecoverableException
                 if (resultCode == Activity.RESULT_OK) {
-                    button.setEnabled(false);
+                    polyTextView.setEnabled(false);
                     AsyncLoadLists.run(this);
                 } else {
                     chooseAccount();
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             adapter.notifyDataSetChanged();
         }
-        button.setEnabled(true);
+        polyTextView.setEnabled(true);
     }
 
     @Override
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             chooseAccount();
         } else {
             if (this.taskLists == null) { // always null???
-                button.setEnabled(false);
+                polyTextView.setEnabled(false);
                 AsyncLoadLists.run(this);
             }
         }
