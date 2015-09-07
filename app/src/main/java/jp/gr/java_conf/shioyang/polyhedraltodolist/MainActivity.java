@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void completeAddNewList(TaskList newTaskList) {
+        this.taskLists.add(newTaskList);
         List<TaskList> tls = new ArrayList<>();
         tls.add(newTaskList);
         AsyncLoadTasks.run(this, polyMergedList, tls, /*isReset*/false);
@@ -239,8 +240,10 @@ public class MainActivity extends AppCompatActivity {
         if (credential.getSelectedAccountName() == null) {
             chooseAccount();
         } else {
-            button.setEnabled(false);
-            AsyncLoadLists.run(this);
+            if (this.taskLists == null) { // always null???
+                button.setEnabled(false);
+                AsyncLoadLists.run(this);
+            }
         }
     }
 
