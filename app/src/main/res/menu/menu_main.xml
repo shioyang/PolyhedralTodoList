@@ -1,10 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item android:id="@+id/action_edit_list_titles" android:title="@string/action_edit_list_titles"
+        android:orderInCategory="100" app:showAsAction="always" />
+    <item android:id="@+id/action_edit_list_titles_done" android:title="@string/action_edit_list_titles_done"
+        android:orderInCategory="100" app:showAsAction="always" android:visible="false" />
+
     <item android:id="@+id/action_add_list" android:title="@string/action_add_list"
         android:orderInCategory="100" app:showAsAction="always" />
+
     <item android:id="@+id/action_remove_list" android:title="@string/action_remove_list"
-        android:orderInCategory="100" app:showAsAction="never" />
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

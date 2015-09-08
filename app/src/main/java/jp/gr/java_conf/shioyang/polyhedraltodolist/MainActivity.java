@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.TaskListsArrayAdapter;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.adapter.TaskListsEditArrayAdapter;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncAddList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadLists;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncLoadTasks;
@@ -56,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
     PolyMergedList polyMergedList;
 
     ListView listView;
-    TaskListsArrayAdapter adapter;
+    ArrayAdapter<TaskList> adapter;
     List<TaskList> taskLists;
     TextView polyTextView;
+    Menu menu;
+    boolean editMode = false;
 
     // ===========================================
     // LIFECYCLE
@@ -144,14 +148,14 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString(PREF_KEY_ACCOUNT_NAME, accountName);
                         editor.apply();
-                        polyTextView.setEnabled(false);
+                        polyTextView.setVisibility(View.GONE);
                         AsyncLoadLists.run(this);
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION: // In AsyncLoadTasks, when access right is needed. UserRecoverableException
                 if (resultCode == Activity.RESULT_OK) {
-                    polyTextView.setEnabled(false);
+                    polyTextView.setVisibility(View.GONE);
                     AsyncLoadLists.run(this);
                 } else {
                     chooseAccount();
@@ -173,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshView() {
-        if (adapter == null) {
-            adapter = new TaskListsArrayAdapter(this, 0, taskLists);
-            listView.setAdapter(adapter);
+        if (editMode) {
+            adapter = new TaskListsEditArrayAdapter(this, 0, taskLists);
         } else {
-            adapter.notifyDataSetChanged();
+            adapter = new TaskListsArrayAdapter(this, 0, taskLists);
         }
-        polyTextView.setEnabled(true);
+        listView.setAdapter(adapter);
+        polyTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -189,10 +193,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        this.menu = menu;
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_edit_list_titles:
+                editMode = true;
+                manageMenuItems();
+                refreshView();
+                return true;
+            case R.id.action_edit_list_titles_done:
+                polyMergedList.saveChangedTasks();
+                editMode = false;
+                manageMenuItems();
+                refreshView();
+                return true;
             case R.id.action_add_list:
                 AsyncAddList.run(this);
                 return true;
@@ -242,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
             chooseAccount();
         } else {
             if (this.taskLists == null) { // always null???
-                polyTextView.setEnabled(false);
+                polyTextView.setVisibility(View.GONE);
                 AsyncLoadLists.run(this);
             }
         }
@@ -250,5 +271,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void chooseAccount() {
         startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+    }
+
+    private void manageMenuItems() {
+        if (menu != null) {
+            MenuItem editItem = menu.findItem(R.id.action_edit_list_titles);
+            MenuItem doneItem = menu.findItem(R.id.action_edit_list_titles_done);
+            editItem.setVisible(!editMode);
+            doneItem.setVisible(editMode);
+        }
     }
 }

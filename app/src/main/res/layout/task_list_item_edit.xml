@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewListItem"
-        android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:focusable="false"
-        android:focusableInTouchMode="false" />
+        android:id="@+id/editTextListItemEdit"
+        android:layout_gravity="center_horizontal"
+        android:inputType="text"
+        android:singleLine="true" />
 
 </LinearLayout>

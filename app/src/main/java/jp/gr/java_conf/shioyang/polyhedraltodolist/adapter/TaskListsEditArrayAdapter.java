@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.api.services.tasks.model.TaskList;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 import jp.gr.java_conf.shioyang.polyhedraltodolist.R;
 
-public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
+public class TaskListsEditArrayAdapter extends ArrayAdapter<TaskList> {
     private LayoutInflater inflater = null;
     private View selectedView = null;
 
@@ -27,7 +28,7 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
         pattern = Pattern.compile(regex);
     }
 
-    public TaskListsArrayAdapter(Context context, int resource, List<TaskList> tasklits) {
+    public TaskListsEditArrayAdapter(Context context, int resource, List<TaskList> tasklits) {
         super(context, resource, tasklits);
         inflater = ((Activity)context).getLayoutInflater();
     }
@@ -35,7 +36,7 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.task_list_item, null);
+            convertView = inflater.inflate(R.layout.task_list_item_edit, null);
         }
 
         TaskList taskList = getItem(position);
@@ -49,8 +50,8 @@ public class TaskListsArrayAdapter extends ArrayAdapter<TaskList> {
         if (matcher.find() && matcher.groupCount() == 1) {
             justTitle = matcher.group(1);
         }
-        TextView textView = (TextView)convertView.findViewById(R.id.textViewListItem);
-        textView.setText(justTitle);
+        EditText editText = (EditText)convertView.findViewById(R.id.editTextListItemEdit);
+        editText.setText(justTitle);
 //        textView.setText(polyTodoItem.getJustTitle());
 
         return convertView;
