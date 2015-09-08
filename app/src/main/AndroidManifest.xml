@@ -26,14 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TodoListActivity"
-            android:label="@string/title_activity_todo_list"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="jp.gr.java_conf.shioyang.polyhedraltodolist.MainActivity" />
-        </activity>
-        <activity
             android:name=".PolyListActivity"
             android:label="@string/title_activity_poly_list"
             android:parentActivityName=".MainActivity" >
