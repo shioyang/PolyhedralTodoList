@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 refreshView();
                 return true;
             case R.id.action_edit_list_titles_done:
-                polyMergedList.saveChangedTasks();
+                polyMergedList.saveChangedLists();
                 editMode = false;
                 manageMenuItems();
                 refreshView();
