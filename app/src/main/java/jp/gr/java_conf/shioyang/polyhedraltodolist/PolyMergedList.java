@@ -42,5 +42,6 @@ public interface PolyMergedList {
     boolean moveDownLocalTask(PolyTodoItem item, PolyTodoList list);
 
     void saveChangedTasks();
+    void saveChangedLists();
     /*** DELETE ***/
 }

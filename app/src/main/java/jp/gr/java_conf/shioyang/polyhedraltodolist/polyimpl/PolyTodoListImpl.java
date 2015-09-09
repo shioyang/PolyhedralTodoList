@@ -101,6 +101,11 @@ public class PolyTodoListImpl implements PolyTodoList {
     }
 
     @Override
+    public TaskList getTaskList() {
+        return taskList;
+    }
+
+    @Override
     public PolyTodoItem getPreviousTask(PolyTodoItem item) {
         PolyTodoItem rtnTodoItem = null;
         if (item != null) {
@@ -202,6 +207,18 @@ public class PolyTodoListImpl implements PolyTodoList {
     @Override
     public void delete(int id) {
 
+    }
+
+    @Override
+    public boolean isSaveNeeded() {
+//        return this.isSaveNeeded;
+        return true; // TODO: currently always true
+    }
+
+    @Override
+    public void saveCompleted() {
+//        this.isSaveNeeded = false;
+        // TODO: currently always true
     }
 
     private Task createTodoItem(int globalPosition, int localPosition, String justTitle) {

@@ -5,26 +5,27 @@ import android.util.Log;
 
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
+import com.google.api.services.tasks.model.TaskList;
 
 import java.io.IOException;
 
-public class AsyncUpdateTask extends AsyncTask<Void, Void, Boolean> {
-    Tasks tasksService;
-    Task task;
-    String listId;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
 
-    public AsyncUpdateTask(Tasks tasksService, Task task, String listId) {
+public class AsyncUpdateList extends AsyncTask<Void, Void, Boolean> {
+    Tasks tasksService;
+    TaskList taskList;
+
+    public AsyncUpdateList(Tasks tasksService, TaskList taskList) {
         this.tasksService = tasksService;
-        this.task = task;
-        this.listId = listId;
+        this.taskList = taskList;
     }
 
     @Override
     protected Boolean doInBackground(Void... voids) {
         boolean isSuccess = false;
         try {
-            synchronized (task) {
-                Task result = tasksService.tasks().update(listId, task.getId(), task).execute();
+            synchronized (taskList) {
+                TaskList result = tasksService.tasklists().update(taskList.getId(), taskList).execute();
             }
             isSuccess = true;
         } catch (IOException e) {
@@ -42,8 +43,8 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Boolean> {
 //        }
     }
 
-    public static void run(Tasks tasksService, Task task, String listId) {
-        Log.d("AsyncUpdateTask", "task: " + task.getId() + " listId: " + listId);
-        new AsyncUpdateTask(tasksService, task, listId).execute();
+    public static void run(Tasks tasksService, TaskList taskList) {
+        Log.d("AsyncUpdateList", "taskList: " + taskList.getId());
+        new AsyncUpdateList(tasksService, taskList).execute();
     }
 }

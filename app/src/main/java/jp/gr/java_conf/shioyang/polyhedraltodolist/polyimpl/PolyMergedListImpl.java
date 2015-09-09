@@ -15,6 +15,7 @@ import jp.gr.java_conf.shioyang.polyhedraltodolist.OnMergedListChangedListener;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyMergedList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoItem;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.PolyTodoList;
+import jp.gr.java_conf.shioyang.polyhedraltodolist.asynctask.AsyncUpdateList;
 import jp.gr.java_conf.shioyang.polyhedraltodolist.exception.TaskMismatchPositionsException;
 
 /*
@@ -264,6 +265,17 @@ public class PolyMergedListImpl implements PolyMergedList {
             for (PolyTodoItem saveItem : savedTasks) {
                 PolyTodoItemExecutor.update(tasksService, saveItem.getTask(), list.getId());
                 saveItem.saveCompleted(); // TODO: If success, saveCompleted. If not, try again.
+            }
+        }
+    }
+
+    @Override
+    public void saveChangedLists() {
+        for (PolyTodoList list : todoLists) {
+            if (list.isSaveNeeded()) {
+                AsyncUpdateList.run(tasksService, list.getTaskList());
+//                PolyTodoListExecutor.update(tasksService, list); // TODO: Prepare PolyTodoListExecutor class
+                list.saveCompleted();
             }
         }
     }

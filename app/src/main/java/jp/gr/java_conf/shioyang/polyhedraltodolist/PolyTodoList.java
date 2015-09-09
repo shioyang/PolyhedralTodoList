@@ -1,6 +1,7 @@
 package jp.gr.java_conf.shioyang.polyhedraltodolist;
 
 import com.google.api.services.tasks.model.Task;
+import com.google.api.services.tasks.model.TaskList;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public interface PolyTodoList {
     String getId();
     String getTitle();
     String getTaskId(int position);
+    TaskList getTaskList();
     PolyTodoItem getPreviousTask(PolyTodoItem item);
     PolyTodoItem getNextTask(PolyTodoItem item);
     String getPreviousTaskId(PolyTodoItem item);
@@ -40,4 +42,7 @@ public interface PolyTodoList {
     void moveDownTask(String id);
     /* DELETE */
     void delete(int id);
+
+    boolean isSaveNeeded();
+    void saveCompleted();
 }
