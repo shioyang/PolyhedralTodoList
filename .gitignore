@@ -1,7 +1,9 @@
 .gradle
 /local.properties
 /build
+/release
 
 memo.txt
 .idea
 *.iml
+*.apk
