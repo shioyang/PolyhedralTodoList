@@ -189,15 +189,15 @@ public class PolyMergedListActivity extends AppCompatActivity {
                 setPolyTodoItems(polyMergedList.getGlobalTodoItems());
                 adapter.notifyDataSetChanged(); // TODO: work???
                 return true;
-            case R.id.action_remove:
-                // TODO: Remove function
-                return true;
+//            case R.id.action_remove:
+//                // TODO: Remove function
+//                return true;
             case R.id.action_list_01:
                 return startListActivity(0);
             case R.id.action_list_02:
                 return startListActivity(1);
-            case R.id.action_settings:
-                return true;
+//            case R.id.action_settings:
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);

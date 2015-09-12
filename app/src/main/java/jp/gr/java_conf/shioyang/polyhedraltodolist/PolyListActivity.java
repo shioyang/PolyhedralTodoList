@@ -118,8 +118,8 @@ public class PolyListActivity extends AppCompatActivity {
                 manageMenuItems();
                 refreshView();
                 return true;
-            case R.id.action_settings:
-                return true;
+//            case R.id.action_settings:
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -217,11 +217,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add_list:
                 AsyncAddList.run(this);
                 return true;
-            case R.id.action_remove_list:
-                // TODO: Remove list
-                return true;
-            case R.id.action_settings:
-                return true;
+//            case R.id.action_remove_list:
+//                // TODO: Remove list
+//                return true;
+//            case R.id.action_settings:
+//                return true;
         }
 
         return super.onOptionsItemSelected(item);
