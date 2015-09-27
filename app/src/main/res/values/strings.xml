@@ -10,18 +10,12 @@
     <string name="action_insert">Insert</string>
     <string name="action_remove">Remove</string>
     <string name="action_remove_list">Remove</string>
-    <string name="action_list_01">List 01</string>
-    <string name="action_list_02">List 02</string>
 
-    <string name="list_id_01">MDM0NzY1NDMwOTU5NDU5MDM4NjA6MTY2ODEyMjgzNjow</string>
-    <string name="list_id_02">MDM0NzY1NDMwOTU5NDU5MDM4NjA6MzA1Nzg5Nzk6MA</string>
     <string name="title_activity_poly_main_list">PolyMainListActivity</string>
 
     <string name="textView_polyTodo_title">Polyhedral TODO List</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_edit_titles">Edit Titles</string>
-    <string name="action_edit_titles_done">Doen</string>
+    <string name="action_edit_titles_done">Done</string>
     <string name="action_edit_list_titles">Edit Titles</string>
     <string name="action_edit_list_titles_done">Doen</string>
-
 </resources>

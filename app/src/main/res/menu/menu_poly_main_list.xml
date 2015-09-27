@@ -14,8 +14,4 @@
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
 
-    <group android:id="@+id/group_list">
-        <item android:id="@+id/action_list_01" android:title="@string/action_list_01" />
-        <item android:id="@+id/action_list_02" android:title="@string/action_list_02" />
-    </group>
 </menu>
