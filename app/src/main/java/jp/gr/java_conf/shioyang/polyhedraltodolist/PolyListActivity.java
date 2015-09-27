@@ -118,6 +118,11 @@ public class PolyListActivity extends AppCompatActivity {
                 manageMenuItems();
                 refreshView();
                 return true;
+            case R.id.action_add:
+                polyMergedList.addTodoItem(polyTodoList.getId());
+                polyTodoItems = polyTodoList.getLocalList();
+                adapter.notifyDataSetChanged(); // TODO: work???
+                return true;
 //            case R.id.action_settings:
 //                return true;
         }
