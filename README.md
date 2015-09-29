@@ -1,7 +1,8 @@
 # PolyhedralTodoList
 
 <img src="images/polyDerived.jpg" alt="Polyhedral Icon" align="right" />
-You can manage Google Tasks as merged TODO tasks on Android.
+You can manage multiple TODO lists as a merged TODO list on Android.
+The lists are stored in Google Tasks.
 
 ### Details
 Merged TODO Tasks
